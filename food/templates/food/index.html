@@ -1,0 +1,14 @@
+{% extends "food/base.html" %}
+{% load static %}
+
+{% block title %}
+FoodBox
+{% endblock %}
+
+{% block body %}
+
+{% for res in restaurants %}
+{{ res.name }}
+{% endfor %}
+
+{% endblock %}
