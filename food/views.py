@@ -10,7 +10,8 @@ from .models import *
 # Create your views here
 def index(request):
     context = {
-        "restaurants": Restaurant.objects.all()
+        "restaurants": Restaurant.objects.all(),
+        "cuisine": Cuisine.objects.all(),
     }
     return render(request, "food/index.html", context)
 

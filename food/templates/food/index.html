@@ -6,9 +6,51 @@ FoodBox
 {% endblock %}
 
 {% block body %}
+<h3 class="my-3" id="f1">Restaurants</h3>
+<div class="row">
+  <div class="d-none d-lg-block col-2">
 
-{% for res in restaurants %}
-{{ res.name }}
-{% endfor %}
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title font-weight-bold" id="logo">Filters</h5>
+        <p class="card-text font-weight-bold" id="f1">Cuisine</p>
+        <div class="mt-n2" id="f1">
+          {% for cui in cuisine %}
+            <small><p class="my-0">{{ cui.name }}</p></small>
+          {% endfor %}
+        </div>
+        <p class="card-text font-weight-bold mt-3" id="f1">Location</p>
+        <div class="mt-n2" id="f1">
+          <small><p class="my-0">The Mall Road</p></small>
+          <small><p class="my-0">Landour</p></small>
+          <small><p class="my-0">Kempty Fall Road</p></small>
+        </div>
+        <p class="card-text font-weight-bold mt-3" id="f1">Price Range</p>
+        <div class="mt-n2" id="f1">
+          <input type="range" class="custom-range" min="0" max="5" step="0.5" id="customRange3">
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-12 col-lg-10 px-3">
+    {% for res in restaurants %}
+    <div class="card flex-row flex-wrap flex-md-nowrap mb-4">
+        <div class="card-header border-0 p-0">
+            <img class="imageSize" src="{% with 'food/'|add:res.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ res.name }}">
+        </div>
+        <div class="card-body p-4 p-md-5 ">
+            <h4 class="card-title font-weight-bold" id="logo">{{ res.name }}</h4>
+            <p class="card-text">{{ res.description }}</p>
+            <a href="#" class="btn btn-outline-danger">Order Now</a>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+
 
 {% endblock %}
