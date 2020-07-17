@@ -20,7 +20,7 @@ def cuisine(request, currentCuisine):
 
     context = {
         "cuisine": currentCuisine,
-        "restaurants": Restaurant.objects.filter(cuisine=category).all()
+        "restaurants": Restaurant.objects.filter(cuisine__name=category).all()
     }
     return render(request, "food/cuisine.html", context)
 
