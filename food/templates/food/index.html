@@ -43,7 +43,7 @@ FoodBox
         <div class="card-body p-4 p-md-5 ">
             <h4 class="card-title font-weight-bold" id="logo">{{ res.name }}</h4>
             <p class="card-text">{{ res.description }}</p>
-            <a href="#" class="btn btn-outline-danger">Order Now</a>
+            <a href="{% url 'restaurant' res.id %}" class="btn btn-outline-danger">Order Now</a>
         </div>
     </div>
     {% endfor %}

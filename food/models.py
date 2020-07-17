@@ -18,6 +18,7 @@ class MenuItem(models.Model):
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=50)
+    nick = models.CharField(max_length=10, blank=True)
     cuisine = models.ManyToManyField(Cuisine, related_name='restaurants')
     description = models.TextField(blank=True)
     phone_number = models.CharField(max_length=50, blank=True)

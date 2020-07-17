@@ -23,3 +23,13 @@ def cuisine(request, currentCuisine):
         "restaurants": Restaurant.objects.filter(cuisine=category).all()
     }
     return render(request, "food/cuisine.html", context)
+
+def restaurant(request, restaurant_id):
+  try:
+      restaurant = Restaurant.objects.get(pk=restaurant_id)
+  except Post.DoesNotExist:
+      raise Http404("Post does not exist")
+  context = {
+      "restaurant": restaurant,
+  }
+  return render(request, "food/restaurant.html", context)
