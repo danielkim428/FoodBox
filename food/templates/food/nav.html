@@ -1,0 +1,29 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark" id="navback">
+  <div class="container">
+  <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">FOODBOX</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'index' %}">Home  <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'cuisines' %}">Cuisines</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'about' %}">About</a>
+      </li>
+    </ul>
+    {% if request.user.is_authenticated %}
+    <p class="text-light my-auto">Hello {{ user.username }}!</p>
+    <a class="btn btn-outline-light border-0 my-2 my-sm-0 mx-0 mx-md-2 d-block" href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a class="btn btn-outline-light border-0 my-2 my-sm-0 mx-0 mx-md-2 d-block" href="{% url 'login' %}">Login</a>
+    <a class="btn btn-outline-light my-2 my-sm-0 d-block" href="{% url 'login' %}">Register</a>
+    {% endif %}
+  </div>
+  </div>
+</nav>

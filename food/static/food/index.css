@@ -2,10 +2,24 @@
   font-family: 'Roboto Condensed', sans-serif;
 }
 #navback {
-  background-color: #FF5733 !important;
+  background-color: #367588 !important;
 }
 #f1 {
   font-family: 'Nanum Gothic', sans-serif;
+}
+#cuisines {
+  filter: brightness(60%);
+}
+#cuisines:hover {
+  background-color: black !important:
+}
+#filter {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 80px;
+}
+.cui_card:hover {
+  cursor: pointer;
 }
 [class*="imageSize"] {
   width: 100%;
