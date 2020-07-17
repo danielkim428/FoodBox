@@ -31,5 +31,6 @@ def restaurant(request, restaurant_id):
       raise Http404("Post does not exist")
   context = {
       "restaurant": restaurant,
+      "menuItem": restaurant.menu.all(),
   }
   return render(request, "food/restaurant.html", context)
