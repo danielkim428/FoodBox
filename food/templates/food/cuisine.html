@@ -1,5 +1,9 @@
 {% extends "food/base.html" %}
 {% block body %}
-  {{ cuisine }}
-  {{ restaurants }}
+  <h1>{{ cuisine }}</h1>
+  <ul>
+    {% for restaurant in restaurants %}
+      <li>{{ restaurant.name }}</li>
+    {% endfor %}
+  </ul>
 {% endblock %}
