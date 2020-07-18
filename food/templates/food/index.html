@@ -30,11 +30,11 @@ FoodBox
           <small><p class="my-0">Landour</p></small>
           <small><p class="my-0">Kempty Fall Road</p></small>
         </div>
-        -->
         <p class="card-text font-weight-bold mt-3" id="f1">Price Range</p>
         <div class="mt-n2" id="f1">
           <input type="range" class="custom-range" min="0" max="5" step="0.5" id="customRange3">
         </div>
+        -->
       </div>
     </div>
 
@@ -63,7 +63,13 @@ FoodBox
   </button>
 
   <div class="collapse navbar-collapse" id="res_filter">
-    <p>hi</p>
+    <div id="mob_filters">
+    {% for cui in cuisine %}
+      <div class="my-n1 d-flex justify-content-between checkbox">
+        <label class="my-auto" for="filter-{{ cui.name }}">{{ cui.name }}</label><input id="filter-{{ cui.name }}" class="my-auto" type="checkbox" value="{{ cui.name }}"/>
+      </div>
+    {% endfor %}
+    </div>
   </div>
   </div>
 </nav>
@@ -71,6 +77,15 @@ FoodBox
   $("#filters :checkbox").click(function() {
       $(".restaurants").hide();
       $("#filters :checkbox:checked").each(function() {
+         $("." + $(this).val()).show();
+      });
+      if($('input[type="checkbox"]:checked').length == 0) {
+        $(".restaurants").show();
+      }
+  });
+  $("#mob_filters :checkbox").click(function() {
+      $(".restaurants").hide();
+      $("#mob_filters :checkbox:checked").each(function() {
          $("." + $(this).val()).show();
       });
       if($('input[type="checkbox"]:checked').length == 0) {

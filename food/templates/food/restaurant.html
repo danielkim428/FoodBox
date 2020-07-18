@@ -25,10 +25,10 @@ FoodBox | {{ restaurant.name }}
           <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phone_number }}
         </div>
         {% for category in categories %}
-          <button class="btn btn-light btn-md btn-block d-flex justify-content-between px-3" type="button" data-toggle="collapse" data-target="#{{ category.name }}" aria-expanded="false" aria-controls="{{ category.name }}">
+          <button class="btn btn-light btn-md btn-block d-flex justify-content-between px-3" type="button" data-toggle="collapse" data-target="#{{ category.name|cut:' ' }}" aria-expanded="false" aria-controls="{{ category.name|cut:' ' }}">
             <p class="my-auto" id="f1">{{ category.name }}</p><i class="fa fa-chevron-down my-auto" aria-hidden="true"></i>
           </button>
-          <div class="collapse show" id="{{ category.name }}">
+          <div class="collapse show" id="{{ category.name|cut:' ' }}">
             <div class="card card-body p-0">
               {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
