@@ -48,8 +48,7 @@ def restaurant(request, restaurant_id):
 
   context = {
       "restaurant": restaurant,
-      "menuItems": restaurant.menu.all(),
-      "categories": restaurant.menu.all().values('category').distinct()
+      "categories": restaurant.categories.all()
   }
 
   return render(request, "food/restaurant.html", context)
