@@ -21,26 +21,14 @@ FoodBox | {{ restaurant.name }}
         <h6 class="card-subtitle mb-2 text-muted" id="f1">{{ restaurant.description }}</h6>
         <h6 class="card-subtitle">Phone: {{ restaurant.phone_number }}</h6>
         <hr>
-        <ul>
-          {% for category in categories %}
-            <!-- Deal with this stupid syntax -->
-            <li><a href="#{{ category.category }}">{{ category.category }}</a></li>
-          {% endfor %}
-        </ul>
-        <hr>
-
-        {% regroup menuItems by category as itemList %}
-
-        {% for category, items in itemList %}
-          <span class="anchor" id="{{ category }}"></span>
-          <h5>{{ category|title }}</h5>
+        {% for category in categories %}
+          <h1>{{ category.name|title }}</h1>
           <ul>
-            {% for menu in items %}
-              <li>{{ menu.name }} - &#8377; {{ menu.price }}</li>
-            {% endfor %}
+          {% for menu in category.menu.all %}
+            <li>{{ menu.name }} - &#8377; {{ menu.price }}</li>
+          {% endfor %}
           </ul>
         {% endfor %}
-
       </div>
     </div>
   </div>
