@@ -50,7 +50,7 @@ FoodBox | {{ restaurant.name }}
         {% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}
       </div>
     </div>
-    <div class="card d-none d-lg-block ">
+    <div class="card d-none d-lg-block" id="filter">
       <div class="card-header bg-white">
         <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>
       </div>
