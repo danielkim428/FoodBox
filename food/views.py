@@ -15,6 +15,15 @@ def index(request):
     }
     return render(request, "food/index.html", context)
 
+def about(request):
+    return render(request, "food/about.html")
+
+def cuisines(request):
+    context = {
+        "cuisines": Cuisine.objects.all(),
+    }
+    return render(request, "food/cuisines.html", context)
+
 def cuisine(request, currentCuisine):
     currentCuisine = currentCuisine.lower()
     print(currentCuisine)
@@ -41,3 +50,49 @@ def restaurant(request, restaurant_id):
       "menuItem": restaurant.menu.all(),
   }
   return render(request, "food/restaurant.html", context)
+
+def login_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            return render(request, 'food/login.html', {"message": "Invalid credentials."})
+    else:
+        return render(request, 'food/login.html')
+
+def logout_view(request):
+    logout(request)
+    return render(request, "food/login.html", {"message": "Logged out."})
+
+def register(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+
+    if request.method == 'POST':
+        email = request.POST['email']
+        username = request.POST['username']
+        password = request.POST['password']
+        first_name = request.POST['firstname']
+        last_name = request.POST['lastname']
+
+        try:
+            new_user = User.objects.create_user(username, email, password)
+            new_user.save()
+
+        except IntegrityError:
+            return render(request, 'food/register.html', {"message": "User already exists"})
+        except:
+            return render(request, 'food/register.html', {"message": "Invalid credentials."})
+
+        return HttpResponseRedirect(reverse('login'))
+
+    else:
+        return render(request, 'food/register.html')
