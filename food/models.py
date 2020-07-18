@@ -19,11 +19,12 @@ class Restaurant(models.Model):
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=50)
-    cost = models.IntegerField()
+    price = models.IntegerField()
+    category = models.CharField(default="", max_length=50)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='menu_item', blank=True)
 
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='menu')
 
     def __str__(self):
-        return '%s - %s' % (self.name, self.cost)
+        return '%s - %s' % (self.name, self.price)

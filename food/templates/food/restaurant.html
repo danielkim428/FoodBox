@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-FoodBox
+  FoodBox
 {% endblock %}
 
 {% block body %}
@@ -18,10 +18,28 @@ FoodBox
     <div class="card">
       <div class="card-body">
         <h2 class="card-title" id="logo">{{ restaurant.name }}</h2>
-        <h6 class="card-subtitle mb-2 text-muted" id="f1">{{ restaurant.description }} {{ restaurant.phone_number }}</h6>
-        {% for menu in menuItem %}
-        <p class="card-text">{{ menu.name }}</p>
+        <h6 class="card-subtitle mb-2 text-muted" id="f1">{{ restaurant.description }}</h6>
+        <h6 class="card-subtitle">Phone: {{ restaurant.phone_number }}</h6>
+        <hr>
+        <ul>
+          {% for category in categories %}
+            <!-- Deal with this stupid syntax -->
+            <li><a href="#{{ category.category }}">{{ category.category }}</a></li>
+          {% endfor %}
+        </ul>
+        <hr>
+
+        {% regroup menuItems by category as itemList %}
+
+        {% for category, items in itemList %}
+          <h5 id="{{ category }}">{{ category|title }}</h5>
+          <ul>
+            {% for menu in items %}
+              <li>{{ menu.name }} - &#8377; {{ menu.price }}</li>
+            {% endfor %}
+          </ul>
         {% endfor %}
+
       </div>
     </div>
   </div>
