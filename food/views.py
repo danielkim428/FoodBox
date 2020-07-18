@@ -46,10 +46,13 @@ def restaurant(request, restaurant_id):
       restaurant = Restaurant.objects.get(pk=restaurant_id)
   except Post.DoesNotExist:
       raise Http404("Post does not exist")
+
   context = {
       "restaurant": restaurant,
-      "menuItem": restaurant.menu.all(),
+      "menuItems": restaurant.menu.all(),
+      "categories": restaurant.menu.all().values('category').distinct()
   }
+
   return render(request, "food/restaurant.html", context)
 
 def login_view(request):
