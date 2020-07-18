@@ -15,7 +15,7 @@ FoodBox
         <p class="card-text font-weight-bold" id="f1">Cuisines</p>
         <div class="mt-n2" id="f1">
           {% for cui in cuisine %}
-            <small><p class="my-0">{{ cui.name }}</p></small>
+            <small><p class="my-0"><a href="/cuisine/{{ cui.name }}">{{ cui.name|title }}</a></p></small>
           {% endfor %}
         </div>
         <!--
