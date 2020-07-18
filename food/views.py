@@ -25,8 +25,7 @@ def cuisines(request):
     return render(request, "food/cuisines.html", context)
 
 def cuisine(request, currentCuisine):
-    #currentCuisine = currentCuisine.lower()
-    currentCuisine = currentCuisine
+    currentCuisine = currentCuisine.lower()
     print(currentCuisine)
 
     try:
