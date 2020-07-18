@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Restaurant)
 admin.site.register(MenuItem)
 admin.site.register(Cuisine)
+admin.site.register(Category)

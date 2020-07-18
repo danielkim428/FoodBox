@@ -13,27 +13,44 @@ FoodBox | {{ restaurant.name }}
     <li class="breadcrumb-item active">{{ restaurant.name }}</li>
   </ol></small>
 </nav>
-<div class="row animate__animated animate__fadeIn h-100">
-  <div class="col-12 col-lg-8">
+<div class="row animate__animated animate__fadeIn">
+  <div class="col-12 col-lg-8 px-0 px-lg-3 mb-4">
     <div class="card">
-      <div class="card-body">
-        <h2 class="card-title" id="logo">{{ restaurant.name }}</h2>
-        <h6 class="card-subtitle mb-2 text-muted" id="f1">{{ restaurant.description }}</h6>
-        <h6 class="card-subtitle">Phone: {{ restaurant.phone_number }}</h6>
-        <hr>
+      <div class="card-body px-0 pb-0">
+        <h1 class="card-title text-center mb-1" id="logo">{{ restaurant.name }}</h1>
+        <div class="text-center mt-0 mb-2">
+          <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> 5.0
+        </div>
+        <div class="text-center mb-3">
+          <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phone_number }}
+        </div>
         {% for category in categories %}
-          <h1>{{ category.name|title }}</h1>
-          <ul>
-          {% for menu in category.menu.all %}
-            <li>{{ menu.name }} - &#8377; {{ menu.price }}</li>
+          <button class="btn btn-light btn-md btn-block d-flex justify-content-between px-3" type="button" data-toggle="collapse" data-target="#{{ category.name }}" aria-expanded="false" aria-controls="{{ category.name }}">
+            <p class="my-auto" id="f1">{{ category.name }}</p><i class="fa fa-chevron-down my-auto" aria-hidden="true"></i>
+          </button>
+          <div class="collapse show" id="{{ category.name }}">
+            <div class="card card-body p-0">
+              {% for menu in category.menu.all %}
+                <div class="border-bottom px-3 py-3">
+                  <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
           {% endfor %}
-          </ul>
-        {% endfor %}
       </div>
     </div>
   </div>
-  <div class="d-none d-lg-block col-12 col-lg-4">
-    <div class="card">
+  <div class="col-12 col-lg-4">
+    <div class="card mb-3">
+      <img class="card-img-top" src="{% with 'food/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
+      <div class="card-body">
+        <h5 class="card-title">{{ restaurant.name }}</h5>
+        <p class="card-subtitle mb-2">{{ restaurant.description }}</p>
+        {% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}
+      </div>
+    </div>
+    <div class="card d-none d-lg-block ">
       <div class="card-header bg-white">
         <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>
       </div>

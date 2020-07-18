@@ -30,7 +30,7 @@ class MenuItem(models.Model):
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='menu_item', blank=True)
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='menu')
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='menu', null=True)
 
     def __str__(self):
         return '%s - %s' % (self.name, self.price)
