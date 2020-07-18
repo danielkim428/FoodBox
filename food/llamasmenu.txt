@@ -1,0 +1,5 @@
+MenuItem(name='Chicken Sausage Pizza',price=460,category=Category.objects.last()).save()
+MenuItem(name='Roasted Chicken Pizza',price=460,category=Category.objects.last()).save()
+MenuItem(name='Chicken Mexican Pizza',price=460,category=Category.objects.last()).save()
+MenuItem(name='Hawaiian (Chicken or Pork)',price= 460,category=Category.objects.last()).save()
+MenuItem(name='Pepperoni Pizza',price=460,category=Category.objects.last()).save()
