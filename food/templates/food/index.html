@@ -13,10 +13,15 @@ FoodBox
       <div class="card-body">
         <h5 class="card-title font-weight-bold" id="logo">Filters</h5>
         <p class="card-text font-weight-bold" id="f1">Cuisines</p>
-        <div class="mt-n2" id="f1">
+        <div class="mt-n3" id="f1">
+          <!--<small><p class="my-0"><a href="/cuisine/{{ cui.name }}">{{ cui.name|title }}</a></p></small>-->
+          <div id="filters">
           {% for cui in cuisine %}
-            <small><p class="my-0"><a href="/cuisine/{{ cui.name }}">{{ cui.name|title }}</a></p></small>
+            <div class="my-n1 d-flex justify-content-between checkbox">
+              <label class="my-auto" for="filter-{{ cui.name }}">{{ cui.name }}</label><input id="filter-{{ cui.name }}" class="my-auto" type="checkbox" value="{{ cui.name }}"/>
+            </div>
           {% endfor %}
+          </div>
         </div>
         <!--
         <p class="card-text font-weight-bold mt-3" id="f1">Location</p>
@@ -34,9 +39,9 @@ FoodBox
     </div>
 
   </div>
-  <div class="col-12 col-lg-10 px-3">
+  <div class="col-12 col-lg-10 px-3 result">
     {% for res in restaurants %}
-    <div class="card flex-row flex-wrap flex-md-nowrap mb-4 animate__animated animate__fadeIn">
+    <div class="restaurants card flex-row flex-wrap flex-md-nowrap mb-4 animate__animated animate__fadeIn {% for cui in res.cuisine.all %}{{ cui.name }} {% endfor %}">
         <div class="card-header border-0 p-0">
             <img class="imageSize" src="{% with 'food/'|add:res.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ res.name }}">
         </div>
@@ -62,7 +67,15 @@ FoodBox
   </div>
   </div>
 </nav>
-{% endblock %}
-
-{% block script %}
+<script>
+  $("#filters :checkbox").click(function() {
+      $(".restaurants").hide();
+      $("#filters :checkbox:checked").each(function() {
+         $("." + $(this).val()).show();
+      });
+      if($('input[type="checkbox"]:checked').length == 0) {
+        $(".restaurants").show();
+      }
+  });
+</script>
 {% endblock %}
