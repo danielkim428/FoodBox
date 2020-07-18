@@ -25,12 +25,19 @@ def cuisines(request):
     return render(request, "food/cuisines.html", context)
 
 def cuisine(request, currentCuisine):
-    category = Cuisine.objects.get(name=currentCuisine)
+    currentCuisine = currentCuisine.lower()
+    print(currentCuisine)
+
+    try:
+        category = Cuisine.objects.get(name=currentCuisine)
+    except:
+        raise Http404("Cuisine does not exist")
 
     context = {
         "cuisine": currentCuisine,
         "restaurants": Restaurant.objects.filter(cuisine__name=category).all()
     }
+
     return render(request, "food/cuisine.html", context)
 
 def restaurant(request, restaurant_id):
