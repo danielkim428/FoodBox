@@ -32,7 +32,8 @@ FoodBox | {{ restaurant.name }}
         {% regroup menuItems by category as itemList %}
 
         {% for category, items in itemList %}
-          <h5 id="{{ category }}">{{ category|title }}</h5>
+          <span class="anchor" id="{{ category }}"></span>
+          <h5>{{ category|title }}</h5>
           <ul>
             {% for menu in items %}
               <li>{{ menu.name }} - &#8377; {{ menu.price }}</li>

@@ -42,6 +42,7 @@ FoodBox
         </div>
         <div class="card-body p-4 p-md-5 ">
             <h4 class="card-title font-weight-bold" id="logo">{{ res.name }}</h4>
+            <p class="card-subtitle " id="f1">{% for cui in res.cuisine.all %}{{ cui.name }} {% endfor %}</p>
             <p class="card-text">{{ res.description }}</p>
             <a href="{% url 'restaurant' res.id %}" class="btn btn-outline-success">Order Now</a>
         </div>
