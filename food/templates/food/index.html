@@ -17,7 +17,7 @@ FoodBox
           <!--<small><p class="my-0"><a href="/cuisine/{{ cui.name }}">{{ cui.name|title }}</a></p></small>-->
           <div id="filters">
           {% for cui in cuisine %}
-            <div class="my-n1 d-flex justify-content-between checkbox">
+            <div class="my-n1 d-flex justify-content-between">
               <label class="my-auto" for="filter-{{ cui.name }}">{{ cui.name }}</label><input id="filter-{{ cui.name }}" class="my-auto" type="checkbox" value="{{ cui.name }}"/>
             </div>
           {% endfor %}
@@ -73,16 +73,14 @@ FoodBox
   </div>
   </div>
 </nav>-->
-<nav class="navbar-light bg-light fixed-bottom collapse" id="cart">
+<nav class="d-lg-none navbar-dark bg-dark fixed-bottom collapse pb-5" id="cart">
   <div class="container">
-  <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
-  <div id="mob_filters">
-  {% for cui in cuisine %}
-    <div class="my-n1 d-flex justify-content-between checkbox">
-      <label class="my-auto" for="filter-{{ cui.name }}">{{ cui.name }}</label><input id="filter-{{ cui.name }}" class="my-auto" type="checkbox" value="{{ cui.name }}"/>
+    <a class="navbar-brand font-weight-bold mt-3 mb-2" href="{% url 'index' %}" id="f1">Filter</a>
+    <div class="mb-5">
+      {% for cui in cuisine %}
+          <label for="filter-{{ cui.name }}" class="btn btn-sm btn-outline-light my-1 mr-1 filter-Indian" style="border-radius:50px;">{{ cui.name }}</label>
+      {% endfor %}
     </div>
-  {% endfor %}
-  </div>
   </div>
 </nav>
 <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
@@ -90,15 +88,6 @@ FoodBox
   $("#filters :checkbox").click(function() {
       $(".restaurants").hide();
       $("#filters :checkbox:checked").each(function() {
-         $("." + $(this).val()).show();
-      });
-      if($('input[type="checkbox"]:checked').length == 0) {
-        $(".restaurants").show();
-      }
-  });
-  $("#mob_filters :checkbox").click(function() {
-      $(".restaurants").hide();
-      $("#mob_filters :checkbox:checked").each(function() {
          $("." + $(this).val()).show();
       });
       if($('input[type="checkbox"]:checked').length == 0) {
