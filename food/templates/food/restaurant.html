@@ -21,13 +21,17 @@ FoodBox | {{ restaurant.name }}
         <div class="text-center mt-0 mb-2">
           <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> 5.0
         </div>
-        <div class="text-center mb-3">
+        <div class="text-center mb-2">
           <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phone_number }}
+        </div>
+        <div class="text-center mb-3">
+          {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
         </div>
         {% for category in categories %}
           <button class="btn btn-light btn-md btn-block d-flex justify-content-between px-3" type="button" data-toggle="collapse" data-target="#{{ category.name|cut:' ' }}" aria-expanded="false" aria-controls="{{ category.name|cut:' ' }}">
             <p class="my-auto" id="f1">{{ category.name }}</p><i class="fa fa-chevron-down my-auto" aria-hidden="true"></i>
           </button>
+          <span class="anchor" id="{{ category.name }}"></span>
           <div class="collapse show" id="{{ category.name|cut:' ' }}">
             <div class="card card-body p-0">
               {% for menu in category.menu.all %}
@@ -47,7 +51,7 @@ FoodBox | {{ restaurant.name }}
       <div class="card-body">
         <h5 class="card-title">{{ restaurant.name }}</h5>
         <p class="card-subtitle mb-2">{{ restaurant.description }}</p>
-        {% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}
+        <!--{% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}-->
       </div>
     </div>
     <div class="card d-none d-lg-block" id="filter">
@@ -68,7 +72,7 @@ FoodBox | {{ restaurant.name }}
     </div>
   </div>
 </div>
-<nav class="d-block d-lg-none navbar fixed-bottom navbar-expand-lg navbar-dark bg-dark">
+<!--<nav class="d-block d-lg-none navbar fixed-bottom navbar-expand-lg navbar-dark bg-dark">
   <div class="container text-white">
   <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#cart" aria-controls="cart" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,5 +85,13 @@ FoodBox | {{ restaurant.name }}
     <p class="my-auto">Side Dish x2</p>
   </div>
   </div>
+</nav>-->
+
+<nav class="navbar navbar-dark bg-dark fixed-bottom collapse" id="cart">
+  <div class="container text-white">
+  <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
+
+  </div>
 </nav>
+<button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i></button>
 {% endblock %}

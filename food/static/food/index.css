@@ -2,7 +2,7 @@
   font-family: 'Roboto Condensed', sans-serif;
 }
 #navback {
-  background-color: #367588 !important;
+  background-color: #5EB668 !important;
 }
 #f1 {
   font-family: 'Nanum Gothic', sans-serif;
@@ -18,13 +18,27 @@
   position: sticky;
   top: 80px;
 }
+#cartToggle {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  height: 55px;
+  width: 55px;
+  background-color: #5EB668;
+  border-radius: 50%;
+  z-index:2;
+  border: none;
+}
+#cart {
+  z-index:1;
+}
 .cui_card:hover {
   cursor: pointer;
 }
 .anchor {
     display: block;
     position: relative;
-    top: -80px;
+    top: -95px;
     visibility: hidden;
 }
 [class*="imageSize"] {
