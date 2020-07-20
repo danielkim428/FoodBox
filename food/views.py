@@ -42,17 +42,38 @@ def cuisine(request, currentCuisine):
     return render(request, "food/cuisine.html", context)
 
 def restaurant(request, restaurant_id):
-  try:
-      restaurant = Restaurant.objects.get(pk=restaurant_id)
-  except Post.DoesNotExist:
-      raise Http404("Post does not exist")
+    try:
+        restaurant = Restaurant.objects.get(pk=restaurant_id)
+    except Post.DoesNotExist:
+        raise Http404("Post does not exist")
 
-  context = {
-      "restaurant": restaurant,
-      "categories": restaurant.categories.all()
-  }
+    context = {
+        "restaurant": restaurant,
+        "categories": restaurant.categories.all()
+    }
 
-  return render(request, "food/restaurant.html", context)
+    if request.user.is_authenticated:
+        context['loggedIn'] = True
+
+        try:
+            currentOrder = Order.objects.get(user=request.user, restaurant=restaurant)
+            context['currentOrder'] = currentOrder
+        except:
+            print('hi')
+    else:
+        context['loggedIn'] = False
+
+    return render(request, "food/restaurant.html", context)
+
+def orders(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+    else:
+        context = {
+            "orders": request.user.orders.all()
+        }
+
+        return render(request, "food/orders.html", context)
 
 def login_view(request):
     if request.user.is_authenticated:
