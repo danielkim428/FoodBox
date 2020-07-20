@@ -55,7 +55,7 @@ FoodBox
     {% endfor %}
   </div>
 </div>
-<nav class="d-block d-lg-none navbar fixed-bottom navbar-expand-lg navbar-light bg-light">
+<!--<nav class="d-block d-lg-none navbar fixed-bottom navbar-expand-lg navbar-light bg-light">
   <div class="container">
   <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Filter</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#res_filter" aria-controls="res_filter" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,20 @@ FoodBox
     </div>
   </div>
   </div>
+</nav>-->
+<nav class="navbar-light bg-light fixed-bottom collapse" id="cart">
+  <div class="container">
+  <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
+  <div id="mob_filters">
+  {% for cui in cuisine %}
+    <div class="my-n1 d-flex justify-content-between checkbox">
+      <label class="my-auto" for="filter-{{ cui.name }}">{{ cui.name }}</label><input id="filter-{{ cui.name }}" class="my-auto" type="checkbox" value="{{ cui.name }}"/>
+    </div>
+  {% endfor %}
+  </div>
+  </div>
 </nav>
+<button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
 <script>
   $("#filters :checkbox").click(function() {
       $(".restaurants").hide();

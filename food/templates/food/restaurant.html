@@ -59,7 +59,7 @@ FoodBox | {{ restaurant.name }}
     </div>
   </div>
 </div>
-<nav class="d-block d-lg-none navbar fixed-bottom navbar-expand-lg navbar-dark bg-dark">
+<!--<nav class="d-block d-lg-none navbar fixed-bottom navbar-expand-lg navbar-dark bg-dark">
   <div class="container text-white">
   <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#cart" aria-controls="cart" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,5 +72,13 @@ FoodBox | {{ restaurant.name }}
     <p class="my-auto">Side Dish x2</p>
   </div>
   </div>
+</nav>-->
+
+<nav class="navbar navbar-dark bg-dark fixed-bottom collapse" id="cart">
+  <div class="container text-white">
+  <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
+
+  </div>
 </nav>
+<button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i></button>
 {% endblock %}
