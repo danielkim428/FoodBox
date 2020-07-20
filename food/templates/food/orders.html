@@ -1,0 +1,19 @@
+{% extends "food/base.html" %}
+{% load static %}
+
+{% block title %}
+FoodBox | Orders
+{% endblock %}
+
+{% block body %}
+  <h1>Orders</h1>
+  {% for order in orders %}
+    <h3>Order ID: {{order.id}}</h3>
+    <p><a href="{% url 'restaurant' order.restaurant.id %}">{{ order.restaurant.name }}</a></p>
+    <ul>
+      {% for item in order.items.all %}
+          <li>{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+{% endblock %}

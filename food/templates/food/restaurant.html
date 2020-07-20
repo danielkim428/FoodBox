@@ -52,9 +52,18 @@ FoodBox | {{ restaurant.name }}
     </div>
     <div class="card d-none d-lg-block" id="filter">
       <div class="card-header bg-white">
-        <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>
+        {% if loggedIn %}
+          <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>
+        {% else %}
+          <h5 class="card-text font-weight-bold">Why ain't you logged in you faggot</h5>
+        {% endif %}
       </div>
       <div class="card-body">
+        <ul>
+          {% for item in currentOrder.items.all %}
+            <li>{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }}</li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
   </div>
