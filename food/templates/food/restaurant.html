@@ -36,7 +36,24 @@ FoodBox | {{ restaurant.name }}
             <div class="card card-body p-0">
               {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
-                  <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
+                  <div class="row">
+                    <div class="col-10">
+                      <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
+                    </div>
+                    <div class="col-2">
+                      <nav aria-label="order count">
+                        <ul class="pagination justify-content-end mt-1 mb-0">
+                          <li class="page-item">
+                            <a class="page-link font-weight-bold text-dark" href="#" tabindex="-1">-</a>
+                          </li>
+                          <li class="page-item disabled"><a class="page-link" href="#">0</a></li>
+                          <li class="page-item">
+                            <a class="page-link font-weight-bold text-dark" href="#">+</a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
                 </div>
               {% endfor %}
             </div>
@@ -45,7 +62,7 @@ FoodBox | {{ restaurant.name }}
       </div>
     </div>
   </div>
-  <div class="col-12 col-lg-4">
+  <div class="col-12 col-lg-4 d-none d-lg-block">
     <div class="card mb-3">
       <img class="card-img-top" src="{% with 'food/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body">
@@ -54,7 +71,7 @@ FoodBox | {{ restaurant.name }}
         <!--{% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}-->
       </div>
     </div>
-    <div class="card d-none d-lg-block" id="filter">
+    <div class="card" id="filter">
       <div class="card-header bg-white">
         {% if loggedIn %}
           <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>

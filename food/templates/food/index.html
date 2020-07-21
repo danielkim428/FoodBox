@@ -78,7 +78,7 @@ FoodBox
     <a class="navbar-brand font-weight-bold mt-3 mb-2" href="{% url 'index' %}" id="f1">Filter</a>
     <div class="mb-5">
       {% for cui in cuisine %}
-          <label for="filter-{{ cui.name }}" class="btn btn-sm btn-outline-light my-1 mr-1 filter-Indian" style="border-radius:50px;">{{ cui.name }}</label>
+          <label for="filter-{{ cui.name }}" class="btn{{ cui.name }} btn btn-sm btn-outline-light my-1 mr-1 filter-Indian" style="border-radius:50px;">{{ cui.name }}</label>
       {% endfor %}
     </div>
   </div>
@@ -92,6 +92,11 @@ FoodBox
       });
       if($('input[type="checkbox"]:checked').length == 0) {
         $(".restaurants").show();
+      }
+      if($(this).is(":checked")) {
+        $(".btn" + $(this).val()).addClass("btnChecked");
+      } else {
+        $(".btn" + $(this).val()).removeClass("btnChecked");
       }
   });
 </script>
