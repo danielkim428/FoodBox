@@ -42,7 +42,6 @@ FoodBox | {{ restaurant.name }}
               <!-- Padding to highlight the menu -->
               {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
-                  
                   <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p>
                   <p class="my-auto">&#8377; {{ menu.price }}</p>
 
@@ -56,7 +55,25 @@ FoodBox | {{ restaurant.name }}
                   {% endfor %}
 
                   <button class="add-order-button" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
-{% endfor %}
+                  <!-- <div class="row">
+                    <div class="col-10">
+                      <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
+                    </div>
+                    <div class="col-2">
+                      <nav aria-label="order count">
+                        <ul class="pagination justify-content-end mt-1 mb-0">
+                          <li class="page-item">
+                            <a class="page-link font-weight-bold text-dark" href="#" tabindex="-1">-</a>
+                          </li>
+                          <li class="page-item disabled"><a class="page-link" href="#">0</a></li>
+                          <li class="page-item">
+                            <a class="page-link font-weight-bold text-dark" href="#">+</a>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div> -->
+                </div>
+              {% endfor %}
 
             </div>
           </div>
