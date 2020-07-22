@@ -44,6 +44,8 @@ class Order(models.Model):
 
     status = models.IntegerField(default=0)
 
+    totalPrice = models.IntegerField(default=0)
+
     def __str__(self):
         return f'{self.user} -> {self.restaurant}, {self.status}'
 
@@ -53,7 +55,7 @@ class OrderItem(models.Model):
     menuItem = models.ForeignKey(MenuItem, on_delete=models.CASCADE, related_name='orders')
 
     price = models.IntegerField(default=0)
-    count = models.IntegerField(default=1)
+    count = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.menuItem} {self.count}'
