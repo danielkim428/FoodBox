@@ -4,6 +4,7 @@
 {% block title %}
 FoodBox | {{ restaurant.name }}
 {% endblock %}
+{% load food_extra %}
 
 {% block scripts %}
   <script type="text/javascript" src="{% static 'food/restaurant.js' %}"></script>
@@ -42,20 +43,7 @@ FoodBox | {{ restaurant.name }}
               <!-- Padding to highlight the menu -->
               {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
-                  <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p>
-                  <p class="my-auto">&#8377; {{ menu.price }}</p>
-
-                  <button class="remove-order-button" data-id="0" disabled>-</button>
-
-                  <!-- We need a more elegant solution -->
-                  {% for item in currentOrder.items.all %}
-                    {% if item.menuItem.id == menu.id %}
-                      <span class="order-item-count">{{ item.count }}</span>
-                    {% endif %}
-                  {% endfor %}
-
-                  <button class="add-order-button" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
-                  <!-- <div class="row">
+                  <div class="row">
                     <div class="col-10">
                       <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
                     </div>
@@ -65,13 +53,14 @@ FoodBox | {{ restaurant.name }}
                           <li class="page-item">
                             <a class="page-link font-weight-bold text-dark" href="#" tabindex="-1">-</a>
                           </li>
-                          <li class="page-item disabled"><a class="page-link" href="#">0</a></li>
+                              <li class="page-item disabled"><a class="page-link order-item-count" href="#">{{ currentOrder.items.all|matchingID:menu.id }}</a></li>
                           <li class="page-item">
-                            <a class="page-link font-weight-bold text-dark" href="#">+</a>
+                            <button class="page-link font-weight-bold text-dark add-order-button" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
                           </li>
                         </ul>
                       </nav>
-                    </div> -->
+                    </div>
+                  </div>
                 </div>
               {% endfor %}
 
