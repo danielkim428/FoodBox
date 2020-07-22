@@ -5,6 +5,10 @@
 FoodBox | {{ restaurant.name }}
 {% endblock %}
 
+{% block scripts %}
+  <script type="text/javascript" src="{% static 'food/restaurant.js' %}"></script>
+{% endblock %}
+
 {% block body %}
 <nav aria-label="breadcrumb"><small>
   <ol class="breadcrumb my-0 bg-light">
@@ -34,11 +38,26 @@ FoodBox | {{ restaurant.name }}
           <span class="anchor" id="{{ category.name }}"></span>
           <div class="collapse show" id="{{ category.name|cut:' ' }}">
             <div class="card card-body p-0">
+
+              <!-- Padding to highlight the menu -->
               {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
-                  <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
+                  <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p>
+                  <p class="my-auto">&#8377; {{ menu.price }}</p>
+
+                  <button class="remove-order-button" data-id="0" disabled>-</button>
+
+                  <!-- We need a more elegant solution -->
+                  {% for item in currentOrder.items.all %}
+                    {% if item.menuItem.id == menu.id %}
+                      <span class="order-item-count">{{ item.count }}</span>
+                    {% endif %}
+                  {% endfor %}
+
+                  <button class="add-order-button" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
                 </div>
               {% endfor %}
+
             </div>
           </div>
           {% endfor %}
@@ -63,11 +82,15 @@ FoodBox | {{ restaurant.name }}
         {% endif %}
       </div>
       <div class="card-body">
-        <ul>
-          {% for item in currentOrder.items.all %}
-            <li>{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }}</li>
-          {% endfor %}
-        </ul>
+        <!-- Order list -->
+        <div>
+        {% for item in currentOrder.items.all %}
+        <p>{{ item.menuItem.name }} &#8377; {{ item.price }} x{{ item.count }}</p>
+        {% endfor %}
+        </div>
+        <div>
+         <b>Total: &#8377; {{ currentOrder.totalPrice }}</b>
+        </div>
       </div>
     </div>
   </div>
@@ -89,8 +112,7 @@ FoodBox | {{ restaurant.name }}
 
 <nav class="navbar navbar-dark bg-dark fixed-bottom collapse" id="cart">
   <div class="container text-white">
-  <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
-
+    <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
   </div>
 </nav>
 <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i></button>

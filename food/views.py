@@ -41,9 +41,9 @@ def cuisine(request, currentCuisine):
 
     return render(request, "food/cuisine.html", context)
 
-def restaurant(request, restaurant_id):
+def restaurant(request, restaurantId):
     try:
-        restaurant = Restaurant.objects.get(pk=restaurant_id)
+        restaurant = Restaurant.objects.get(pk=restaurantId)
     except Post.DoesNotExist:
         raise Http404("Post does not exist")
 

@@ -1,9 +1,10 @@
 from django.urls import path
 from . import views
+from . import apiViews
 
 urlpatterns = [
     path("", views.index, name='index'),
-    path("restaurant/<int:restaurant_id>", views.restaurant, name='restaurant'),
+    path("restaurant/<int:restaurantId>", views.restaurant, name='restaurant'),
     path("cuisine/<currentCuisine>", views.cuisine, name='cuisine'),
     path("cuisines", views.cuisines, name='cuisines'),
 
@@ -14,4 +15,6 @@ urlpatterns = [
     path("register", views.register, name='register'),
 
     path("about", views.about, name='about'),
+
+    path("api/menu/addOrderItem/<int:restaurantId>/<int:menuId>", apiViews.addOrder)
 ]
