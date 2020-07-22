@@ -32,6 +32,10 @@
 #cart {
   z-index:1;
 }
+.btnChecked {
+  background-color: #5EB668;
+  border-color: #5EB668;
+}
 .cui_card:hover {
   cursor: pointer;
 }

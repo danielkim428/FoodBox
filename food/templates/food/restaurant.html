@@ -42,6 +42,7 @@ FoodBox | {{ restaurant.name }}
               <!-- Padding to highlight the menu -->
               {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
+                  
                   <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p>
                   <p class="my-auto">&#8377; {{ menu.price }}</p>
 
@@ -55,8 +56,7 @@ FoodBox | {{ restaurant.name }}
                   {% endfor %}
 
                   <button class="add-order-button" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
-                </div>
-              {% endfor %}
+{% endfor %}
 
             </div>
           </div>
@@ -64,7 +64,7 @@ FoodBox | {{ restaurant.name }}
       </div>
     </div>
   </div>
-  <div class="col-12 col-lg-4">
+  <div class="col-12 col-lg-4 d-none d-lg-block">
     <div class="card mb-3">
       <img class="card-img-top" src="{% with 'food/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body">
@@ -73,7 +73,7 @@ FoodBox | {{ restaurant.name }}
         <!--{% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}-->
       </div>
     </div>
-    <div class="card d-none d-lg-block" id="filter">
+    <div class="card" id="filter">
       <div class="card-header bg-white">
         {% if loggedIn %}
           <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>
@@ -110,7 +110,7 @@ FoodBox | {{ restaurant.name }}
   </div>
 </nav>-->
 
-<nav class="navbar navbar-dark bg-dark fixed-bottom collapse" id="cart">
+<nav class="d-lg-none navbar navbar-dark bg-dark fixed-bottom collapse" id="cart">
   <div class="container text-white">
     <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Your Order</a>
   </div>
