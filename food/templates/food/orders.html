@@ -8,7 +8,7 @@ FoodBox | Orders
 {% block body %}
   <h1>Your orders</h1>
   {% for order in orders %}
-    <h3>Order ID: {{order.id}}</h3>
+    <h3>Order ID: {{order.id}} Status: {{order.status}} Price: &#8377; {{ order.totalPrice }}</h3>
     <p><a href="{% url 'restaurant' order.restaurant.id %}">{{ order.restaurant.name }}</a></p>
     <ul>
       {% for item in order.items.all %}
