@@ -50,7 +50,8 @@ def addItem(request, restaurantId, menuId):
         orderItem.price = orderItem.count * menuItem.price
         context['orderId'] = orderItem.id
 
-        orderList.totalPrice += orderItem.price
+        orderList.totalPrice += menuItem.price
+        print(orderList.totalPrice)
 
         orderItem.save()
         orderList.save()
@@ -65,7 +66,7 @@ def removeItem(request, orderedId):
         orderItem = OrderItem.objects.get(id=orderedId)
         orderList = orderItem.orderList
 
-        orderList.totalPrice -= orderItem.price
+        orderList.totalPrice -= orderItem.menuItem.price
         orderList.save()
 
         # If only one ordered, then the OrderItem model should be deleted
@@ -82,4 +83,6 @@ def removeItem(request, orderedId):
             context = {
                 'count': orderItem.count
             }
+
+        print(orderList.totalPrice)
     return JsonResponse(context)
