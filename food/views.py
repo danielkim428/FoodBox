@@ -49,7 +49,8 @@ def restaurant(request, restaurantId):
 
     context = {
         "restaurant": restaurant,
-        "menuItems": MenuItem.objects.filter(category__restaurant=restaurant)
+        "categories": restaurant.categories.all()
+        # "menuItems": MenuItem.objects.filter(category__restaurant=restaurant)
     }
 
     if request.user.is_authenticated:
@@ -58,9 +59,9 @@ def restaurant(request, restaurantId):
         try:
             currentOrder = Order.objects.get(user=request.user, restaurant=restaurant)
 
-            subquery = OrderItem.objects.filter(orderList=currentOrder, menuItem=OuterRef('pk'))
-            context["menuItems"] = MenuItem.objects.filter(category__restaurant=restaurant)\
-                .annotate(userOrdered=Exists(subquery))
+            # subquery = OrderItem.objects.filter(orderList=currentOrder, menuItem=OuterRef('pk'))
+            # context["menuItems"] = MenuItem.objects.filter(category__restaurant=restaurant)\
+                # .annotate(userOrdered=Exists(subquery))
 
             context['currentOrder'] = currentOrder
         except:
