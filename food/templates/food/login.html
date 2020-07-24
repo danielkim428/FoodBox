@@ -1,4 +1,6 @@
 {% extends "food/base.html" %}
+{% load static %}
+{% load socialaccount %}
 
 {% block title %}
 FoodBox | Login
@@ -31,6 +33,9 @@ FoodBox | Login
                                 placeholder="Password" required>
                         </div>
                         <button type="submit" value="Login" class="mt-3 btn btn-success btn-block">LOGIN</button>
+                    </form>
+                    <form class="mt-n1" action="{% provider_login_url 'google' %}">
+                        <button type="submit" value="Login" class="mt-3 btn btn-light btn-block shadow-sm" style="background-color: white;"><img src="{% static 'food/img/g-logo.png' %}" alt="Google" height="25px;"> Sign in with Google</button>
                     </form>
                     <hr>
                     <p class="mt-4 text-dark text-center">Not a member? <a class="text-success" href="{% url 'register' %}">Sign up now</a>.

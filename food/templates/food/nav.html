@@ -18,7 +18,7 @@
       </li>
     </ul>
     {% if request.user.is_authenticated %}
-    <p class="text-light my-auto">Hello {{ user.username }}!</p>
+    <p class="text-light my-auto">You are my fire - {{ user.username|title }}</p>
     <a class="btn btn-outline-light border-0 my-2 my-sm-0 mx-0 mx-md-2 d-block" href="{% url 'logout' %}">Logout</a>
     {% else %}
     <a class="btn btn-outline-light border-0 my-2 my-sm-0 mx-0 mx-md-2 d-block" href="{% url 'login' %}">Login</a>
