@@ -4,6 +4,7 @@
 {% block title %}
 FoodBox | {{ restaurant.name }}
 {% endblock %}
+{% load food_extra %}
 
 {% block scripts %}
   <script type="text/javascript" src="{% static 'food/restaurant.js' %}"></script>
@@ -28,13 +29,10 @@ FoodBox | {{ restaurant.name }}
         <div class="text-center mb-2">
           <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phone_number }}
         </div>
-
-        {% regroup menuItems by category as categories %}
-
         <div class="text-center mb-3">
-          {% for category, menu in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
+          {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
         </div>
-        {% for category, menu in categories %}
+        {% for category in categories %}
           <button class="btn btn-light btn-md btn-block d-flex justify-content-between px-3" type="button" data-toggle="collapse" data-target="#{{ category.name|cut:' ' }}" aria-expanded="false" aria-controls="{{ category.name|cut:' ' }}">
             <p class="my-auto" id="f1">{{ category.name }}</p><i class="fa fa-chevron-down my-auto" aria-hidden="true"></i>
           </button>
@@ -43,26 +41,9 @@ FoodBox | {{ restaurant.name }}
             <div class="card card-body p-0">
 
               <!-- Padding to highlight the menu -->
-              {% for menuItem in menu %}
+              {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
-                  <p class="font-weight-bold my-auto" id="f1">{{ menuItem.name }}</p>
-                  <p class="my-auto">&#8377; {{ menuItem.price }}</p>
-
-                  <button class="remove-order-button" data-id="0" disabled>-</button>
-
-                  <!-- We need a more elegant solution -->
-                  {% if menuItem.userOrdered == True %}
-                    {% for item in currentOrder.items.all %}
-                      {% if item.menuItem.id == menuItem.id %}
-                        <span class="order-item-count">{{ item.count }}</span>
-                      {% endif %}
-                    {% endfor %}
-                  {% else %}
-                    <span class="order-item-count">0</span>
-                  {% endif %}
-
-                  <button class="add-order-button" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
-                  <!-- <div class="row">
+                  <div class="row">
                     <div class="col-10">
                       <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
                     </div>
@@ -72,13 +53,14 @@ FoodBox | {{ restaurant.name }}
                           <li class="page-item">
                             <a class="page-link font-weight-bold text-dark" href="#" tabindex="-1">-</a>
                           </li>
-                          <li class="page-item disabled"><a class="page-link" href="#">0</a></li>
+                              <li class="page-item disabled"><a class="page-link order-item-count" href="#">{{ currentOrder.items.all|matchingID:menu.id }}</a></li>
                           <li class="page-item">
-                            <a class="page-link font-weight-bold text-dark" href="#">+</a>
+                            <button class="page-link font-weight-bold text-dark add-order-button" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
                           </li>
                         </ul>
                       </nav>
-                    </div> -->
+                    </div>
+                  </div>
                 </div>
               {% endfor %}
 
