@@ -87,7 +87,17 @@ document.addEventListener('DOMContentLoaded', () => {
     addOrderItem(addButton, removeButton, counter)
   })
 
-  /* LEGACY CODE */
+  /* FEATURE 2: Update Order list while adding and removing orders */
+  const orderDiv = document.querySelector('#order-div')
+  
+  const orderList = orderDiv.querySelector('#order-list')
+  const totalPrice = orderDiv.querySelector('#total-price')
+
+  ////////////////////////////////////////////////////////////////
+  //                                                            //
+  //                      LEGACY CODE                           //
+  //                                                            //
+  ////////////////////////////////////////////////////////////////
   // Don't delete what's underneath unless instructed to.
 
   // // Call all the add-order-button's
