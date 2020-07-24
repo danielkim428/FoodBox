@@ -49,13 +49,22 @@ FoodBox | {{ restaurant.name }}
                     </div>
                     <div class="col-2">
                       <nav aria-label="order count">
-                        <ul class="pagination justify-content-end mt-1 mb-0">
+                        <ul class="order-item-div pagination justify-content-end mt-1 mb-0">
+                          <!-- Look into templatetags for more description -->
+                          {{ currentOrder.items.all|matchingID:menu.id }}
+                          <!-- FUNCTIONS:
+                            - Remove Button
+                            - Count -->
+
+                          <!-- FOR REFERENCE:
+                            <li class="page-item">
+                              <button class="remove-order-button page-link font-weight-bold text-dark" data-id="{result['id']}">-</button>
+                            </li>
+                            <li class="page-item disabled"><a class="page-link order-item-count" href="#">{result['count']}</a></li>
+                          -->
+
                           <li class="page-item">
-                            <a class="page-link font-weight-bold text-dark" href="#" tabindex="-1">-</a>
-                          </li>
-                              <li class="page-item disabled"><a class="page-link order-item-count" href="#">{{ currentOrder.items.all|matchingID:menu.id }}</a></li>
-                          <li class="page-item">
-                            <button class="page-link font-weight-bold text-dark add-order-button" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
+                            <button class="add-order-button page-link font-weight-bold text-dark" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
                           </li>
                         </ul>
                       </nav>

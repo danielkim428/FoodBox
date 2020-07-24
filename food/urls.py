@@ -16,5 +16,6 @@ urlpatterns = [
 
     path("about", views.about, name='about'),
 
-    path("api/menu/addOrderItem/<int:restaurantId>/<int:menuId>", apiViews.addOrder)
+    path("api/menu/addOrderItem/<int:restaurantId>/<int:menuId>", apiViews.addItem),
+    path("api/menu/removeOrderItem/<int:orderedId>", apiViews.removeItem)
 ]

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.core.serializers import serialize
 from .models import *
 
-def addOrder(request, restaurantId, menuId):
+def addItem(request, restaurantId, menuId):
     if not request.user.is_authenticated:
         context = {
             'status': 'Not allowed.'
@@ -33,35 +33,53 @@ def addOrder(request, restaurantId, menuId):
         try:
             orderItem = OrderItem.objects.get(menuItem=menuItem, orderList=orderList)
             print('Item already been ordered.')
+
+            # Alert the API that this orderItem is NOT new
+            context['new'] = False
         except:
             print('Never been ordered before.')
             orderItem = OrderItem(menuItem=menuItem, orderList=orderList, price=menuItem.price, count=0)
             orderItem.save()
 
+            # Alert the API that this orderItem is new
+            context['new'] = True
+
         orderItem.count += 1
-        orderItem.save()
+
+        # Update orderItem price
+        orderItem.price = orderItem.count * menuItem.price
+        context['orderId'] = orderItem.id
 
         orderList.totalPrice += orderItem.price
+
+        orderItem.save()
         orderList.save()
-
-        print(orderList.totalPrice)
-        print(orderList.items.all())
-
     return JsonResponse(context)
 
-# def removeOrder(request, orderedId):
-#     if not request.user.is_authenticated:
-#         context = {
-#             'status': 'Not allowed.'
-#         }
-#     else:
-#         orderItem = OrderItem.objects.get(id=orderedId)
-#
-#         # If only one ordered, then the OrderItem model should be deleted
-#         if (orderItem.count == 1):
-#             orderItem.delete()
-#         else:
-#             orderItem.count -= 1
-#             orderItem.save()
-#
-#     return JsonResponse(context)
+def removeItem(request, orderedId):
+    if not request.user.is_authenticated:
+        context = {
+            'status': 'Not allowed.'
+        }
+    else:
+        orderItem = OrderItem.objects.get(id=orderedId)
+        orderList = orderItem.orderList
+
+        orderList.totalPrice -= orderItem.price
+        orderList.save()
+
+        # If only one ordered, then the OrderItem model should be deleted
+        if (orderItem.count == 1):
+            orderItem.delete()
+
+            context = {
+                'count': 0
+            }
+        else:
+            orderItem.count -= 1
+            orderItem.save()
+
+            context = {
+                'count': orderItem.count
+            }
+    return JsonResponse(context)
