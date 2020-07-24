@@ -19,7 +19,7 @@ def matchingID(items, menuID):
     except:
         return mark_safe(f'''
               <li class="page-item">
-                <button class="remove-order-button page-link font-weight-bold text-dark" disabled>-</button>
+                <button class="remove-order-button page-link font-weight-bold text-dark button-disabled" disabled>-</button>
               </li>
               <li class="page-item disabled"><a class="page-link order-item-count">0</a></li>
             ''')

@@ -32,6 +32,9 @@
 #cart {
   z-index:1;
 }
+.button-disabled {
+  background-color: #F8F9FA;
+}
 .btnChecked {
   background-color: #5EB668;
   border-color: #5EB668;

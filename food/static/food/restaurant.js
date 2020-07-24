@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (newCount <= 0) {
             btn.disabled = true
+            btn.classList.add('button-disabled')
           }
         })
     }
@@ -60,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add the OrderItem ID to the remove item button
             removeBtn.dataset.id = orderId
             removeBtn.disabled = false
+            removeBtn.classList.remove('button-disabled')
           }
         })
     }
