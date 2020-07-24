@@ -15,6 +15,16 @@ def index(request):
     }
     return render(request, "food/index.html", context)
 
+def orders(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+    else:
+        context = {
+            "orders": request.user.orders.all()
+        }
+
+        return render(request, "food/orders.html", context)
+
 def about(request):
     return render(request, "food/about.html")
 
@@ -54,32 +64,31 @@ def restaurant(request, restaurantId):
     }
 
     if request.user.is_authenticated:
-        context['loggedIn'] = True
+        if request.method == 'POST':
+            orderId = request.POST['orderId']
+            order = Order.objects.get(id=orderId)
+            order.status = 1
+            order.save()
 
-        try:
-            currentOrder = Order.objects.get(user=request.user, restaurant=restaurant)
+            return HttpResponseRedirect(reverse('orders'))
+        else:
+            context['loggedIn'] = True
 
-            # subquery = OrderItem.objects.filter(orderList=currentOrder, menuItem=OuterRef('pk'))
-            # context["menuItems"] = MenuItem.objects.filter(category__restaurant=restaurant)\
-                # .annotate(userOrdered=Exists(subquery))
+            try:
+                currentOrder = Order.objects.get(user=request.user, restaurant=restaurant, status=0)
 
-            context['currentOrder'] = currentOrder
-        except:
-            print('hi')
+                # subquery = OrderItem.objects.filter(orderList=currentOrder, menuItem=OuterRef('pk'))
+                # context["menuItems"] = MenuItem.objects.filter(category__restaurant=restaurant)\
+                    # .annotate(userOrdered=Exists(subquery))
+
+                context['currentOrder'] = currentOrder
+            except:
+                print('No current order')
     else:
         context['loggedIn'] = False
 
     return render(request, "food/restaurant.html", context)
 
-def orders(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
-    else:
-        context = {
-            "orders": request.user.orders.all()
-        }
-
-        return render(request, "food/orders.html", context)
 
 def login_view(request):
     if request.user.is_authenticated:

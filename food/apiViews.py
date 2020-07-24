@@ -22,12 +22,15 @@ def addItem(request, restaurantId, menuId):
         # Does the order list exist?
         try:
             orderList = Order.objects.get(user=request.user, status=0, restaurant=restaurant)
+            context['newOrderList'] = False
             print('Order list already exists')
         # If not, create
         except:
             print('New order list created.')
             orderList = Order(user=request.user, status=0, restaurant=restaurant)
             orderList.save()
+
+            context['newOrderList'] = True
 
         # Has this item been ordered yet?
         try:
@@ -51,10 +54,18 @@ def addItem(request, restaurantId, menuId):
         context['orderId'] = orderItem.id
 
         orderList.totalPrice += menuItem.price
-        print(orderList.totalPrice)
+        context['totalPrice'] = orderList.totalPrice
 
         orderItem.save()
         orderList.save()
+
+        context['orderListId'] = orderList.id
+
+        # Previously, there were NO ITEMS ordered
+        if (orderList.items.count() == 1):
+            print('No items WERE ordered.')
+            context['newOrderList'] = True
+
     return JsonResponse(context)
 
 def removeItem(request, orderedId):
@@ -63,8 +74,12 @@ def removeItem(request, orderedId):
             'status': 'Not allowed.'
         }
     else:
+        context = {}
+
         orderItem = OrderItem.objects.get(id=orderedId)
         orderList = orderItem.orderList
+
+        context['orderId'] = orderedId
 
         orderList.totalPrice -= orderItem.menuItem.price
         orderList.save()
@@ -73,16 +88,19 @@ def removeItem(request, orderedId):
         if (orderItem.count == 1):
             orderItem.delete()
 
-            context = {
-                'count': 0
-            }
+            context['count'] = 0
         else:
             orderItem.count -= 1
             orderItem.save()
 
-            context = {
-                'count': orderItem.count
-            }
+            context['count'] = orderItem.count
 
-        print(orderList.totalPrice)
+        # If there is NO ITEM ORDERED, tell the user
+        if (orderList.items.count() == 0):
+            print('No items ordered.')
+            context['none'] = True
+        else:
+            context['none'] = False
+
+        context['totalPrice'] = orderList.totalPrice
     return JsonResponse(context)

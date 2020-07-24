@@ -3,13 +3,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ////////////////////////////////////////////////////////////////
   //                                                            //
+  //                        MAIN CODE                           //
+  //                                                            //
+  ////////////////////////////////////////////////////////////////
+  /* IMPORTANT VARIABLES - Order list */
+  // This orderDiv isn't that useful right now but keep it here for now
+  const orderDiv = document.querySelector('#order-div')
+
+  const orderList = orderDiv.querySelector('#order-list')
+  const totalPrice = orderDiv.querySelector('#total-price')
+
+  /* Menu items can easily be ordered using a side div */
+  // Call the order item divs
+  const itemDivs = document.querySelectorAll('.order-item-div')
+  itemDivs.forEach(itemDiv => {
+    const counter = itemDiv.querySelector('.order-item-count')
+
+    // - Remove-order buttons
+    const removeButton = itemDiv.querySelector('.remove-order-button')
+    removeOrderItem(removeButton, counter)
+
+    // + Add-order buttons
+    const addButton = itemDiv.querySelector('.add-order-button')
+    addOrderItem(addButton, removeButton, counter)
+  })
+
+  const orderListId = document.getElementById('order-id')
+  const orderButton = document.querySelector('#order-button')
+
+  ////////////////////////////////////////////////////////////////
+  //                                                            //
   //                        FUNCTIONS                           //
   //                                                            //
   ////////////////////////////////////////////////////////////////
 
   /* UPDATE Count of OrderItem */
-  // I mean, this is pretty useless but I don't know maybe
-  // bump: the number you want to add to the item count (can be negative)
   function updateCount(counter, bump) {
     const count = Number(counter.innerHTML)
     counter.innerHTML = count + bump
@@ -28,12 +56,28 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(result => {
           console.log(result)
 
+          totalPrice.innerHTML = result['totalPrice']
+
           // Update counter + get the new count
           const newCount = updateCount(counter, -1)
+
+          const orderId = result['orderId']
+          const orderItem = document.getElementById(`order-item-${orderId}`)
 
           if (newCount <= 0) {
             btn.disabled = true
             btn.classList.add('button-disabled')
+            orderItem.remove()
+          }
+          else {
+            // Update count on the ORDER LIST
+            const itemCount = orderItem.querySelector('.item-count')
+            itemCount.innerHTML = Number(itemCount.innerText) - 1
+          }
+
+          // Is the Order list none?
+          if (result['none']) {
+            orderButton.style.display = 'none'
           }
         })
     }
@@ -52,48 +96,39 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(result => {
           console.log(result)
 
+          totalPrice.innerHTML = result['totalPrice']
+
           const newCount = updateCount(counter, 1)
 
+          const orderId = result['orderId']
           // Has a new OrderItem has been created?
           if (result['new'] == true) {
-            const orderId = result['orderId']
+            // TODO Add new order template
+            orderList.innerHTML += `\
+              <tr id="order-item-${ orderId }"><td>${ result['name'] }\
+              </td><td>&#8377; ${ result['price'] }\
+              x<span class="item-count text-success">1</span></td></tr>`
 
             // Add the OrderItem ID to the remove item button
             removeBtn.dataset.id = orderId
             removeBtn.disabled = false
             removeBtn.classList.remove('button-disabled')
           }
+          else {
+            const orderItem = document.getElementById(`order-item-${orderId}`)
+            const itemCount = orderItem.querySelector('.item-count')
+            itemCount.innerHTML = Number(itemCount.innerText) + 1
+          }
+
+          // If a new Order object has been created, enable
+          if (result['newOrderList']) {
+            console.log(result['orderListId'])
+            orderListId.value = result['orderListId']
+            orderButton.style.display = 'block'
+          }
         })
     }
   }
-
-  ////////////////////////////////////////////////////////////////
-  //                                                            //
-  //                        MAIN CODE                           //
-  //                                                            //
-  ////////////////////////////////////////////////////////////////
-
-  /* FEATURE 1: Menu items can easily be ordered using a side div */
-
-  // Call the order item divs
-  const itemDivs = document.querySelectorAll('.order-item-div')
-  itemDivs.forEach(itemDiv => {
-    const counter = itemDiv.querySelector('.order-item-count')
-
-    // - Remove-order buttons
-    const removeButton = itemDiv.querySelector('.remove-order-button')
-    removeOrderItem(removeButton, counter)
-
-    // + Add-order buttons
-    const addButton = itemDiv.querySelector('.add-order-button')
-    addOrderItem(addButton, removeButton, counter)
-  })
-
-  /* FEATURE 2: Update Order list while adding and removing orders */
-  const orderDiv = document.querySelector('#order-div')
-  
-  const orderList = orderDiv.querySelector('#order-list')
-  const totalPrice = orderDiv.querySelector('#total-price')
 
   ////////////////////////////////////////////////////////////////
   //                                                            //

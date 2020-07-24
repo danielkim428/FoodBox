@@ -98,26 +98,36 @@ FoodBox | {{ restaurant.name }}
       </div>
       <div class="card-body" id="order-div">
         <!-- Order list -->
-        <table class="table" id="order-list">
-          <tbody>
-            {% for item in currentOrder.items.all %}
-              <tr>
-                <td>{{ item.menuItem.name }}</td>
-                <td>&#8377; {{ item.menuItem.price }} x{{ item.count }}</td>
-              </tr>
-            {% endfor %}
-
+        <table class="table">
+          <tbody id="order-list">
+              {% for item in currentOrder.items.all %}
+                <tr id="order-item-{{ item.id }}">
+                  <td>{{ item.menuItem.name }}</td>
+                  <td>&#8377; {{ item.menuItem.price }} x<span class="item-count text-success">{{ item.count }}</span></td>
+                </tr>
+              {% endfor %}
+          </tbody>
+          <tfoot>
             <tr>
               {% if currentOrder %}
                 <td>Total</td>
-                <td>&#8377; <span id="total-price">{{ currentOrder.totalPrice }}</span></td>
+                <td><span class="text-danger">&#8377; <span id="total-price">{{ currentOrder.totalPrice }}</span></span></td>
               {% else %}
                 <td>Total</td>
-                <td>&#8377; <span id="total-price">0</span></td>
+                <td><span class="text-danger">&#8377; <span id="total-price">0</span></span></td>
               {% endif %}
             </tr>
-          </tbody>
+          </tfoot>
         </table>
+        <form action="{% url 'restaurant' restaurant.id %}" method="post">
+          {% csrf_token %}
+          <input id="order-id" type="hidden" name="orderId" value="{{ currentOrder.id }}">
+          {% if currentOrder.totalPrice > 0 %}
+            <button id="order-button" class="form-control btn-danger" type="submit" name="button">Order</button>
+          {% else %}
+            <button id="order-button" class="form-control btn-danger" type="submit" name="button" style="display: none;">Order</button>
+          {% endif %}
+        </form>
       </div>
     </div>
   </div>
