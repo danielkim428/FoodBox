@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.db.models import Count
+from django.db.models import Count, Exists, OuterRef
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -49,7 +49,7 @@ def restaurant(request, restaurantId):
 
     context = {
         "restaurant": restaurant,
-        "categories": restaurant.categories.all()
+        "menuItems": MenuItem.objects.filter(category__restaurant=restaurant)
     }
 
     if request.user.is_authenticated:
@@ -57,6 +57,11 @@ def restaurant(request, restaurantId):
 
         try:
             currentOrder = Order.objects.get(user=request.user, restaurant=restaurant)
+
+            subquery = OrderItem.objects.filter(orderList=currentOrder, menuItem=OuterRef('pk'))
+            context["menuItems"] = MenuItem.objects.filter(category__restaurant=restaurant)\
+                .annotate(userOrdered=Exists(subquery))
+
             context['currentOrder'] = currentOrder
         except:
             print('hi')
