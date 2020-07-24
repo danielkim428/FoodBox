@@ -81,7 +81,7 @@ FoodBox | {{ restaurant.name }}
   </div>
   <div class="col-12 col-lg-4 d-none d-lg-block">
     <div class="card mb-3">
-      <img class="card-img-top" src="{% with 'food/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
+      <img class="card-img-top" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body">
         <h5 class="card-title">{{ restaurant.name }}</h5>
         <p class="card-subtitle mb-2">{{ restaurant.description }}</p>
