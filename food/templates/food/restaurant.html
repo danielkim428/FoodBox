@@ -96,16 +96,28 @@ FoodBox | {{ restaurant.name }}
           <h5 class="card-text font-weight-bold">Why ain't you logged in you faggot</h5>
         {% endif %}
       </div>
-      <div class="card-body">
+      <div class="card-body" id="order-div">
         <!-- Order list -->
-        <div>
-        {% for item in currentOrder.items.all %}
-        <p>{{ item.menuItem.name }} &#8377; {{ item.price }} x{{ item.count }}</p>
-        {% endfor %}
-        </div>
-        <div>
-         <b>Total: &#8377; {{ currentOrder.totalPrice }}</b>
-        </div>
+        <table class="table" id="order-list">
+          <tbody>
+            {% for item in currentOrder.items.all %}
+              <tr>
+                <td>{{ item.menuItem.name }}</td>
+                <td>&#8377; {{ item.menuItem.price }} x{{ item.count }}</td>
+              </tr>
+            {% endfor %}
+
+            <tr>
+              {% if currentOrder %}
+                <td>Total</td>
+                <td>&#8377; <span id="total-price">{{ currentOrder.totalPrice }}</span></td>
+              {% else %}
+                <td>Total</td>
+                <td>&#8377; <span id="total-price">0</span></td>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
