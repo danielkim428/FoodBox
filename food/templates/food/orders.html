@@ -14,6 +14,7 @@ FoodBox | Orders
       {% for item in order.items.all %}
           <li>{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
       {% endfor %}
+      <li>{{ order.address }}</li>
     </ul>
   {% endfor %}
 

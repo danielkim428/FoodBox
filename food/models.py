@@ -45,6 +45,7 @@ class MenuItem(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='orders')
+    address = models.CharField(max_length=100, blank=True)
 
     status = models.IntegerField(default=0)
 
