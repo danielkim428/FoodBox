@@ -15,6 +15,13 @@ def index(request):
     }
     return render(request, "food/index.html", context)
 
+def address(request):
+    context = {
+        "restaurants": Restaurant.objects.all(),
+        "cuisine": Cuisine.objects.all(),
+    }
+    return render(request, "food/address.html", context)
+
 def orders(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))

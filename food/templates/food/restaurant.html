@@ -89,14 +89,13 @@ FoodBox | {{ restaurant.name }}
       </div>
     </div>
     <div class="card" id="filter">
-      <div class="card-header bg-white">
+      <div class="card-body" id="order-div">
         {% if loggedIn %}
           <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>
         {% else %}
           <h5 class="card-text font-weight-bold">Why ain't you logged in you faggot</h5>
         {% endif %}
-      </div>
-      <div class="card-body" id="order-div">
+
         <!-- Order list -->
         <table class="table">
           <tbody id="order-list">
@@ -119,6 +118,7 @@ FoodBox | {{ restaurant.name }}
             </tr>
           </tfoot>
         </table>
+        
         <form action="{% url 'restaurant' restaurant.id %}" method="post">
           {% csrf_token %}
           <input id="order-id" type="hidden" name="orderId" value="{{ currentOrder.id }}">
