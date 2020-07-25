@@ -1,0 +1,81 @@
+{% extends "food/base.html" %}
+{% load static %}
+
+{% block title %}
+FoodBox
+{% endblock %}
+
+{% block body %}
+<h3 class="my-3" id="f1">Confirm order - #{{ currentOrder.id }} ({{ restaurant.name }})</h3>
+<div class="row mt-4 mb-5">
+  <div class="col-12 col-lg-6">
+    {% for items in currentOrder.items.all %}
+    {{ items.menuItem.name }} &#8377;{{ items.menuItem.price }} x{{ items.count}}
+    <br>
+    {% endfor %}
+    Total Price: &#8377;{{ currentOrder.totalPrice }}
+  </div>
+  <div class="col-12 col-lg-6 border rounded p-4 shadow">
+    <form action="{% url 'address' restaurant.id %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="orderId" value="{{ currentOrder.id }}">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Your delivery address</label>
+        <div class="input-group mb-3">
+          <input type="text" id="address" class="form-control border-0" name="address" value="" placeholder="Enter your delivery address">
+          <div class="input-group-append">
+            <div style="cursor: pointer;" class="btn btn-success" onclick="getLocation()"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+          </div>
+        </div>
+        <small id="addressHelp" class="form-text text-muted mt-n2">Please enter your delivery address specifically.</small>
+      </div>
+      <button class="btn btn-success" type="submit" name="button">Confirm Order</button>
+    </form>
+  </div>
+</div>
+
+<p id="alert"></p>
+
+<script type="text/javascript">
+  var x = document.getElementById("alert");
+  var lat;
+  var long;
+  var address;
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+      x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+  }
+
+  function showPosition(position) {
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+    console.log(lat + ", " + long);
+    var url = "http://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+long+"&zoom=18&addressdetails=1";
+    $.getJSON(url, function(data) {
+      console.log(data);
+      document.getElementById("address").value = data.display_name;
+    });
+  }
+
+  function showError(error) {
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        x.innerHTML = "User denied the request for Geolocation."
+        break;
+      case error.POSITION_UNAVAILABLE:
+        x.innerHTML = "Location information is unavailable."
+        break;
+      case error.TIMEOUT:
+        x.innerHTML = "The request to get user location timed out."
+        break;
+      case error.UNKNOWN_ERROR:
+        x.innerHTML = "An unknown error occurred."
+        break;
+    }
+  }
+</script>
+{% endblock %}

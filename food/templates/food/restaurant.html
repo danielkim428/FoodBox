@@ -37,6 +37,10 @@ FoodBox | {{ restaurant.name }}
             {{ restaurant.openTime }} - {{ restaurant.closeTime }}
              |
           {% endif %}
+<<<<<<< HEAD
+=======
+           &nbsp;|&nbsp;
+>>>>>>> 819bf3df10d291877a3faf69bc210347e648766d
           <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
         </div>
         <div class="text-center mb-3">
@@ -96,6 +100,7 @@ FoodBox | {{ restaurant.name }}
         <h5 class="card-title">{{ restaurant.name }}</h5>
         <p class="card-subtitle mb-2">{{ restaurant.description }}</p>
         <!-- Open Time -->
+        <p class="my-n1">
         {% if restaurant.openTime %}
           {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
             <span class="text-success">Open</span>
@@ -104,19 +109,18 @@ FoodBox | {{ restaurant.name }}
           {% endif %}
           {{ restaurant.openTime }} - {{ restaurant.closeTime }}
         {% endif %}
-
+        </p>
         <!--{% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}-->
       </div>
     </div>
     <div class="card" id="filter">
-      <div class="card-header bg-white">
+      <div class="card-body" id="order-div">
         {% if loggedIn %}
           <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>
         {% else %}
           <h5 class="card-text font-weight-bold">Why ain't you logged in you faggot</h5>
         {% endif %}
-      </div>
-      <div class="card-body" id="order-div">
+
         <!-- Order list -->
         <table class="table">
           <tbody id="order-list">
@@ -139,6 +143,7 @@ FoodBox | {{ restaurant.name }}
             </tr>
           </tfoot>
         </table>
+
         <form action="{% url 'restaurant' restaurant.id %}" method="post">
           {% csrf_token %}
           <input id="order-id" type="hidden" name="orderId" value="{{ currentOrder.id }}">

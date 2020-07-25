@@ -7,6 +7,7 @@ urlpatterns = [
     path("restaurant/<int:restaurantId>", views.restaurant, name='restaurant'),
     path("cuisine/<currentCuisine>", views.cuisine, name='cuisine'),
     path("cuisines", views.cuisines, name='cuisines'),
+    path("address/<int:restaurantId>", views.address, name='address'),
 
     path("orders", views.orders, name='orders'),
 

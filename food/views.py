@@ -50,7 +50,8 @@ def cuisine(request, currentCuisine):
 
     context = {
         "cuisine": currentCuisine,
-        "restaurants": Restaurant.objects.filter(cuisine__name=category).all()
+        "restaurants": Restaurant.objects.filter(cuisine__name=category).all(),
+        "currentTime": datetime.datetime.now(),
     }
 
     return render(request, "food/cuisine.html", context)
@@ -59,7 +60,7 @@ def restaurant(request, restaurantId):
     try:
         restaurant = Restaurant.objects.get(pk=restaurantId)
     except Post.DoesNotExist:
-        raise Http404("Post does not exist")
+        raise Http404("Restaurant does not exist")
 
     context = {
         "restaurant": restaurant,
@@ -72,10 +73,10 @@ def restaurant(request, restaurantId):
         if request.method == 'POST':
             orderId = request.POST['orderId']
             order = Order.objects.get(id=orderId)
-            order.status = 1
+            # order.status = 1
             order.save()
 
-            return HttpResponseRedirect(reverse('orders'))
+            return HttpResponseRedirect(reverse('address', args=[restaurantId]))
         else:
             context['loggedIn'] = True
 
@@ -93,6 +94,44 @@ def restaurant(request, restaurantId):
         context['loggedIn'] = False
 
     return render(request, "food/restaurant.html", context)
+
+def address(request, restaurantId):
+    try:
+        restaurant = Restaurant.objects.get(pk=restaurantId)
+    except Post.DoesNotExist:
+        raise Http404("Restaurant does not exist")
+
+    context = {
+        "restaurant": restaurant
+    }
+
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            address = request.POST['address']
+            orderId = request.POST['orderId']
+            order = Order.objects.get(id=orderId)
+            order.address = address
+            order.status = 1
+            order.save()
+
+            return HttpResponseRedirect(reverse('orders'))
+        else:
+            context['loggedIn'] = True
+
+            try:
+                currentOrder = Order.objects.get(user=request.user, restaurant=restaurant, status=0)
+
+                # subquery = OrderItem.objects.filter(orderList=currentOrder, menuItem=OuterRef('pk'))
+                # context["menuItems"] = MenuItem.objects.filter(category__restaurant=restaurant)\
+                    # .annotate(userOrdered=Exists(subquery))
+
+                context['currentOrder'] = currentOrder
+            except:
+                return HttpResponseRedirect(reverse('restaurant', args=[restaurantId]))
+                print('Something went wrong.')
+    else:
+        context['loggedIn'] = False
+    return render(request, "food/address.html", context)
 
 
 def login_view(request):
