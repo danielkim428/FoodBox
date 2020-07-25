@@ -109,46 +109,67 @@ FoodBox | {{ restaurant.name }}
         <!--{% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}-->
       </div>
     </div>
-    <div class="card" id="filter">
-      <div class="card-body" id="order-div">
+    <div class="card shadow" id="filter">
+      <div class="card-body py-4 px-4" id="order-div">
         {% if loggedIn %}
-          <h5 class="card-text font-weight-bold" id="logo">Your Order</h5>
+        <div class="d-flex justify-content-between">
+          <h5 class="card-text font-weight-bold f2">YOUR ORDER</h5>
+          <h5 class="font-weight-light">#<span id="order-ID">{{ currentOrder.id }}</span></h5>
+        </div>
         {% else %}
-          <h5 class="card-text font-weight-bold">Why ain't you logged in you faggot</h5>
+          <h5 class="card-text font-weight-bold f2">PLEASE LOGIN TO ORDER</h5>
         {% endif %}
 
+
         <!-- Order list -->
-        <table class="table">
+        {% if request.user.is_authenticated %}
+        <hr class="orderList">
+        <table class="table table-borderless f2 mt-n3">
+          <thead>
+             <tr class="font-weight-bold">
+               <th scope="col"><small>PRODUCT</small></th>
+               <th scope="col"><small>QTY</small></th>
+               <th scope="col"><small>PRICE</small></th>
+             </tr>
+           </thead>
           <tbody id="order-list">
               {% for item in currentOrder.items.all %}
                 <tr id="order-item-{{ item.id }}">
-                  <td>{{ item.menuItem.name }}</td>
-                  <td>&#8377; {{ item.menuItem.price }} x<span class="item-count text-success">{{ item.count }}</span></td>
+                  <td class="font-weight-bold">{{ item.menuItem.name }}</td>
+                  <td class="text-right item-count">{{ item.count }}</td>
+                  <td class="text-right item-price">{{ item.menuItem.price|multiply:item.count }}</td>
                 </tr>
               {% endfor %}
           </tbody>
           <tfoot>
-            <tr>
+            <tr class="font-weight-bold">
               {% if currentOrder %}
-                <td>Total</td>
-                <td><span class="text-danger">&#8377; <span id="total-price">{{ currentOrder.totalPrice }}</span></span></td>
+                <td>Total (&#8377;)</td>
+                <td></td>
+                <td class="text-right"><span id="total-price">{{ currentOrder.totalPrice }}</span></td>
               {% else %}
-                <td>Total</td>
-                <td><span class="text-danger">&#8377; <span id="total-price">0</span></span></td>
+                <td>Total (&#8377;)</td>
+                <td></td>
+                <td class="text-right"><span id="total-price">0</span></td>
               {% endif %}
             </tr>
           </tfoot>
         </table>
-
+        <hr class="orderList mt-n2">
         <form action="{% url 'restaurant' restaurant.id %}" method="post">
           {% csrf_token %}
           <input id="order-id" type="hidden" name="orderId" value="{{ currentOrder.id }}">
           {% if currentOrder.totalPrice > 0 %}
-            <button id="order-button" class="form-control btn-danger" type="submit" name="button">Order</button>
+            <button id="order-button" class="form-control btn-danger" type="submit" name="button">Confirm Order</button>
           {% else %}
-            <button id="order-button" class="form-control btn-danger" type="submit" name="button" style="display: none;">Order</button>
+            <button id="order-button" class="form-control btn-danger" type="submit" name="button" style="display: none;">Confirm Order</button>
           {% endif %}
         </form>
+        {% else %}
+        <form class="mt-3" action="{% url 'login' %}">
+          <button id="order-button" class="form-control btn-outline-success" type="submit" name="button">LOGIN</button>
+        </form>
+        {% endif %}
       </div>
     </div>
   </div>

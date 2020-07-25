@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 #logo {
   font-family: 'Roboto Condensed', sans-serif;
 }
@@ -6,6 +7,9 @@
 }
 #f1 {
   font-family: 'Nanum Gothic', sans-serif;
+}
+.f2 {
+  font-family: 'Raleway', sans-serif;
 }
 #cuisines {
   filter: brightness(60%);
@@ -47,6 +51,9 @@
     position: relative;
     top: -95px;
     visibility: hidden;
+}
+.orderList {
+  border-top: 1px dashed grey;
 }
 [class*="imageSize"] {
   width: 100%;

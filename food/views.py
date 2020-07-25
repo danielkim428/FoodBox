@@ -108,13 +108,16 @@ def address(request, restaurantId):
     if request.user.is_authenticated:
         if request.method == 'POST':
             address = request.POST['address']
-            orderId = request.POST['orderId']
-            order = Order.objects.get(id=orderId)
-            order.address = address
-            order.status = 1
-            order.save()
+            if address == "":
+                return HttpResponseRedirect(reverse('address', args=[restaurantId]))
+            else:
+                orderId = request.POST['orderId']
+                order = Order.objects.get(id=orderId)
+                order.address = address
+                order.status = 1
+                order.save()
 
-            return HttpResponseRedirect(reverse('orders'))
+                return HttpResponseRedirect(reverse('orders'))
         else:
             context['loggedIn'] = True
 
