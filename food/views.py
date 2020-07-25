@@ -7,12 +7,16 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import *
 
+import datetime
+
 # Create your views here
 def index(request):
     context = {
         "restaurants": Restaurant.objects.all(),
         "cuisine": Cuisine.objects.all(),
+        "currentTime": datetime.datetime.now()
     }
+
     return render(request, "food/index.html", context)
 
 def address(request):
@@ -66,7 +70,8 @@ def restaurant(request, restaurantId):
 
     context = {
         "restaurant": restaurant,
-        "categories": restaurant.categories.all()
+        "categories": restaurant.categories.all(),
+        "currentTime": datetime.datetime.now()
         # "menuItems": MenuItem.objects.filter(category__restaurant=restaurant)
     }
 

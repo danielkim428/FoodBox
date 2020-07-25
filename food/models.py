@@ -12,8 +12,11 @@ class Restaurant(models.Model):
     nick = models.CharField(max_length=10, blank=True)
     cuisine = models.ManyToManyField(Cuisine, related_name='restaurants')
     description = models.TextField(blank=True)
-    phone_number = models.CharField(max_length=50, blank=True)
+    phoneNumber = models.CharField(max_length=50, blank=True)
     url = models.URLField(blank=True)
+
+    openTime = models.TimeField(blank=True, null=True)
+    closeTime = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -33,7 +36,8 @@ class MenuItem(models.Model):
 
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='menu', null=True)
 
-    total_count = models.IntegerField(default=0)
+    # TODO When you order a MenuItem, it should increase the totalCount
+    totalCount = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.name} - {self.price}'
