@@ -123,7 +123,7 @@ def register(request):
         last_name = request.POST['lastname']
 
         try:
-            new_user = User.objects.create_user(username, email, password)
+            new_user = User.objects.create_user(username, email, password, first_name=first_name, last_name=last_name)
             new_user.save()
 
         except IntegrityError:

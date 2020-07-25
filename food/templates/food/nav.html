@@ -16,10 +16,26 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'about' %}">About</a>
       </li>
+      {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'orders' %}">Your orders</a>
+      </li>
+      {% endif %}
     </ul>
     {% if request.user.is_authenticated %}
-    <p class="text-light my-auto">You are my fire - {{ user.username|title }}</p>
-    <a class="btn btn-outline-light border-0 my-2 my-sm-0 mx-0 mx-md-2 d-block" href="{% url 'logout' %}">Logout</a>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ user.username|title }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Your profile</a>
+          <a class="dropdown-item" href="{% url 'orders' %}">Your orders</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
+        </div>
+      </li>
+    </ul>
     {% else %}
     <a class="btn btn-outline-light border-0 my-2 my-sm-0 mx-0 mx-md-2 d-block" href="{% url 'login' %}">Login</a>
     <a class="btn btn-outline-light my-2 my-sm-0 d-block" href="{% url 'register' %}">Register</a>

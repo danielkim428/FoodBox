@@ -6,7 +6,7 @@ FoodBox | Orders
 {% endblock %}
 
 {% block body %}
-  <h1>Orders</h1>
+  <h1>Your orders</h1>
   {% for order in orders %}
     <h3>Order ID: {{order.id}} Status: {{order.status}} Price: &#8377; {{ order.totalPrice }}</h3>
     <p><a href="{% url 'restaurant' order.restaurant.id %}">{{ order.restaurant.name }}</a></p>
@@ -16,4 +16,54 @@ FoodBox | Orders
       {% endfor %}
     </ul>
   {% endfor %}
+
+  <h3 class="my-3" id="f1">Your orders</h3>
+  <div class="row">
+    <div class="col-12 col-lg-3">
+      <div class="card border-0 account-card card-active my-2" onclick="window.location.href = '#'">
+        <div class="card-body py-2">
+          <i class="fas fa-user-circle"></i> My details
+        </div>
+      </div>
+      <div class="card border-0 my-2 account-card" onclick="window.location.href = '#'">
+        <div class="card-body py-2">
+          <i class="fas fa-signature"></i> Signed petitions
+        </div>
+      </div>
+      <div class="card border-0 my-2 account-card" onclick="window.location.href = '#'">
+        <div class="card-body py-2">
+          <i class="fas fa-file-contract"></i> My petitions
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<nav class="d-block d-lg-none navbar fixed-bottom navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+    <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Filter</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#res_filter" aria-controls="res_filter" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fa fa-filter" aria-hidden="true"></i></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="res_filter">
+      <div id="mob_filters">
+      {% for cui in cuisine %}
+        <div class="my-n1 d-flex justify-content-between checkbox">
+          <label class="my-auto" for="filter-{{ cui.name }}">{{ cui.name }}</label><input id="filter-{{ cui.name }}" class="my-auto" type="checkbox" value="{{ cui.name }}"/>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+    </div>
+  </nav>-->
+  <nav class="d-lg-none navbar-dark bg-dark fixed-bottom collapse pb-5" id="cart">
+    <div class="container">
+      <a class="navbar-brand font-weight-bold mt-3 mb-2" href="{% url 'index' %}" id="f1">Filter</a>
+      <div class="mb-5">
+        {% for cui in cuisine %}
+            <label for="filter-{{ cui.name }}" class="btn{{ cui.name }} btn btn-sm btn-outline-light my-1 mr-1 filter-Indian" style="border-radius:50px;">{{ cui.name }}</label>
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
+  <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
 {% endblock %}
