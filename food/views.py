@@ -57,7 +57,8 @@ def cuisine(request, currentCuisine):
 
     context = {
         "cuisine": currentCuisine,
-        "restaurants": Restaurant.objects.filter(cuisine__name=category).all()
+        "restaurants": Restaurant.objects.filter(cuisine__name=category).all(),
+        "currentTime": datetime.datetime.now(),
     }
 
     return render(request, "food/cuisine.html", context)

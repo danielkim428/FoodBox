@@ -9,14 +9,26 @@ FoodBox
 
 <h3 class="my-3" id="f1">{{ cuisine|title }}</h3>
 <div class="row">
-  <div class="col-12 px-3">
+  <div class="col-12 px-3 result">
     {% for res in restaurants %}
-    <div class="card flex-row flex-wrap flex-md-nowrap mb-4 animate__animated animate__fadeIn">
+    <div class="restaurants card flex-row flex-wrap flex-md-nowrap mb-4 animate__animated animate__fadeIn {% for cui in res.cuisine.all %}{{ cui.name }} {% endfor %}">
         <div class="card-header border-0 p-0">
             <img class="imageSize" src="{% with 'food/img/'|add:res.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ res.name }}">
         </div>
-        <div class="card-body p-4 p-md-5 ">
-            <h4 class="card-title font-weight-bold" id="logo">{{ res.name }}</h4>
+        <div class="card-body p-4 p-md-5">
+            <h4 class="card-title font-weight-bold mb-0" id="logo">{{ res.name }}</h4>
+            <!-- Restaurant Open Time -->
+            {% if res.openTime %}
+              <p class="card-text mb-0">
+                {% if res.openTime <= currentTime.time and res.closeTime >= currentTime.time %}
+                  <span class="text-success">Open</span>
+                {% else %}
+                  <span class="text-danger">Closed</span>
+                {% endif %}
+                {{ res.openTime }} - {{ res.closeTime }}
+              </p>
+            {% endif %}
+            <p class="card-subtitle mt-1" id="f1">{% for cui in res.cuisine.all %}{{ cui.name }} {% endfor %}</p>
             <p class="card-text">{{ res.description }}</p>
             <a href="{% url 'restaurant' res.id %}" class="btn btn-outline-success">Order Now</a>
         </div>
