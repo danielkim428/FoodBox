@@ -35,12 +35,8 @@ FoodBox | {{ restaurant.name }}
               <span class="text-danger">Open</span>
             {% endif %}
             {{ restaurant.openTime }} - {{ restaurant.closeTime }}
-             |
           {% endif %}
-<<<<<<< HEAD
-=======
            &nbsp;|&nbsp;
->>>>>>> 819bf3df10d291877a3faf69bc210347e648766d
           <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
         </div>
         <div class="text-center mb-3">
@@ -118,7 +114,7 @@ FoodBox | {{ restaurant.name }}
         {% if loggedIn %}
         <div class="d-flex justify-content-between">
           <h5 class="card-text font-weight-bold f2">YOUR ORDER</h5>
-          <h5 class="font-weight-light">#<span id="order-ID">{{ currentOrder.id }}</span></h5>
+          <h5 class="font-weight-light">#{{ currentOrder.id }}span></h5>
         </div>
         {% else %}
           <h5 class="card-text font-weight-bold f2">PLEASE LOGIN TO ORDER</h5>
