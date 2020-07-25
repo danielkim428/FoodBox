@@ -18,6 +18,8 @@ FoodBox | Orders
     </ul>
   {% endfor %}
 
+
+  <!--
   <h3 class="my-3" id="f1">Your orders</h3>
   <div class="row">
     <div class="col-12 col-lg-3">
@@ -38,6 +40,8 @@ FoodBox | Orders
       </div>
     </div>
   </div>
+  -->
+
   <!--<nav class="d-block d-lg-none navbar fixed-bottom navbar-expand-lg navbar-light bg-light">
     <div class="container">
     <a class="navbar-brand font-weight-bold" href="{% url 'index' %}" id="logo">Filter</a>
@@ -56,15 +60,5 @@ FoodBox | Orders
     </div>
     </div>
   </nav>-->
-  <nav class="d-lg-none navbar-dark bg-dark fixed-bottom collapse pb-5" id="cart">
-    <div class="container">
-      <a class="navbar-brand font-weight-bold mt-3 mb-2" href="{% url 'index' %}" id="f1">Filter</a>
-      <div class="mb-5">
-        {% for cui in cuisine %}
-            <label for="filter-{{ cui.name }}" class="btn{{ cui.name }} btn btn-sm btn-outline-light my-1 mr-1 filter-Indian" style="border-radius:50px;">{{ cui.name }}</label>
-        {% endfor %}
-      </div>
-    </div>
-  </nav>
-  <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+
 {% endblock %}

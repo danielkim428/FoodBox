@@ -5,6 +5,7 @@ from django.db.models import Count, Exists, OuterRef
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from .models import *
 
 import datetime
@@ -95,6 +96,7 @@ def restaurant(request, restaurantId):
 
     return render(request, "food/restaurant.html", context)
 
+@login_required
 def address(request, restaurantId):
     try:
         restaurant = Restaurant.objects.get(pk=restaurantId)

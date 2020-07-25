@@ -1,36 +1,91 @@
 {% extends "food/base.html" %}
 {% load static %}
+{% load food_extra %}
 
 {% block title %}
 FoodBox
 {% endblock %}
 
 {% block body %}
-<h3 class="my-3" id="f1">Confirm order - #{{ currentOrder.id }} ({{ restaurant.name }})</h3>
+<h3 class="my-3" id="f1">Delivery address</h3>
 <div class="row mt-4 mb-5">
-  <div class="col-12 col-lg-6">
+  <div class="col-12 col-lg-6 mb-4">
+    <!--
     {% for items in currentOrder.items.all %}
     {{ items.menuItem.name }} &#8377;{{ items.menuItem.price }} x{{ items.count}}
     <br>
     {% endfor %}
     Total Price: &#8377;{{ currentOrder.totalPrice }}
-  </div>
-  <div class="col-12 col-lg-6 border rounded p-4 shadow">
-    <form action="{% url 'address' restaurant.id %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="orderId" value="{{ currentOrder.id }}">
-      <div class="form-group">
-        <label for="exampleInputEmail1">Your delivery address</label>
-        <div class="input-group mb-3">
-          <input type="text" id="address" class="form-control border-0" name="address" value="" placeholder="Enter your delivery address">
-          <div class="input-group-append">
-            <div style="cursor: pointer;" class="btn btn-success" onclick="getLocation()"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-          </div>
+    -->
+
+    <div class="card shadow" id="filter">
+      <div class="card-body py-4 px-4" id="order-div">
+        {% if loggedIn %}
+        <div class="d-flex justify-content-between">
+          <h5 class="card-text font-weight-bold f2">YOUR ORDER <span class="text-secondary">({{ restaurant.name }})</span></h5>
+          <h5 class="font-weight-light">#{{ currentOrder.id }}</h5>
         </div>
-        <small id="addressHelp" class="form-text text-muted mt-n2">Please enter your delivery address specifically.</small>
+        {% else %}
+          <h5 class="card-text font-weight-bold f2">PLEASE LOGIN TO ORDER</h5>
+        {% endif %}
+
+
+        <!-- Order list -->
+        <hr class="orderList">
+        <table class="table table-borderless f2 mt-n3">
+          <thead>
+             <tr class="font-weight-bold">
+               <th scope="col"><small>PRODUCT</small></th>
+               <th scope="col"><small>QTY</small></th>
+               <th scope="col"><small>PRICE</small></th>
+             </tr>
+           </thead>
+          <tbody id="order-list">
+              {% for item in currentOrder.items.all %}
+                <tr id="order-item-{{ item.id }}">
+                  <td class="font-weight-bold">{{ item.menuItem.name }}</td>
+                  <td class="text-right item-count">{{ item.count }}</td>
+                  <td class="text-right item-price">{{ item.menuItem.price|multiply:item.count }}</td>
+                </tr>
+              {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr class="font-weight-bold">
+              {% if currentOrder %}
+                <td>Total (&#8377;)</td>
+                <td></td>
+                <td class="text-right"><span id="total-price">{{ currentOrder.totalPrice }}</span></td>
+              {% else %}
+                <td>Total (&#8377;)</td>
+                <td></td>
+                <td class="text-right"><span id="total-price">0</span></td>
+              {% endif %}
+            </tr>
+          </tfoot>
+        </table>
+        <hr class="orderList mt-n2">
+        <a class="btn btn-outline-danger border-0" href="{% url 'restaurant' restaurant.id %}">Change order</a>
       </div>
-      <button class="btn btn-success" type="submit" name="button">Confirm Order</button>
-    </form>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6 px-1 px-lg-2">
+    <div class="card bg-light p-4 shadow rounded">
+      <form action="{% url 'address' restaurant.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="orderId" value="{{ currentOrder.id }}">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Your delivery address</label>
+          <div class="input-group mb-3">
+            <input type="text" id="address" class="form-control border-0" name="address" value="" placeholder="Enter your delivery address">
+            <div class="input-group-append">
+              <div style="cursor: pointer;" class="btn btn-success" onclick="getLocation()"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+            </div>
+          </div>
+          <small id="addressHelp" class="form-text text-muted mt-n2">Please enter your delivery address specifically.</small>
+        </div>
+        <button class="btn btn-success btn-block" type="submit" name="button">Confirm Order</button>
+      </form>
+    </div>
   </div>
 </div>
 
