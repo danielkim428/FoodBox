@@ -32,7 +32,7 @@ FoodBox | {{ restaurant.name }}
             {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
               <span class="text-success">Open</span>
             {% else %}
-              <span class="text-danger">Open</span>
+              <span class="text-danger">Closed</span>
             {% endif %}
             {{ restaurant.openTime }} - {{ restaurant.closeTime }}
             &nbsp;|&nbsp;
@@ -101,7 +101,7 @@ FoodBox | {{ restaurant.name }}
           {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
             <span class="text-success">Open</span>
           {% else %}
-            <span class="text-danger">Open</span>
+            <span class="text-danger">Closed</span>
           {% endif %}
           {{ restaurant.openTime }} - {{ restaurant.closeTime }}
         {% endif %}
