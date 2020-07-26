@@ -8,6 +8,10 @@ def animate(value, arg):
     return arg + value * 0.2
 
 @register.filter
+def multiply(value, arg):
+    return value * arg
+
+@register.filter
 # Check if there is already an OrderItem for the MenuItem
 def matchingID(items, menuID):
     try:

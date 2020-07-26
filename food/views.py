@@ -5,6 +5,7 @@ from django.db.models import Count, Exists, OuterRef
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from .models import *
 
 import datetime
@@ -95,6 +96,7 @@ def restaurant(request, restaurantId):
 
     return render(request, "food/restaurant.html", context)
 
+@login_required
 def address(request, restaurantId):
     try:
         restaurant = Restaurant.objects.get(pk=restaurantId)
@@ -108,13 +110,16 @@ def address(request, restaurantId):
     if request.user.is_authenticated:
         if request.method == 'POST':
             address = request.POST['address']
-            orderId = request.POST['orderId']
-            order = Order.objects.get(id=orderId)
-            order.address = address
-            order.status = 1
-            order.save()
+            if address == "":
+                return HttpResponseRedirect(reverse('address', args=[restaurantId]))
+            else:
+                orderId = request.POST['orderId']
+                order = Order.objects.get(id=orderId)
+                order.address = address
+                order.status = 1
+                order.save()
 
-            return HttpResponseRedirect(reverse('orders'))
+                return HttpResponseRedirect(reverse('orders'))
         else:
             context['loggedIn'] = True
 

@@ -72,6 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
           else {
             // Update count on the ORDER LIST
             const itemCount = orderItem.querySelector('.item-count')
+            const itemPrice = orderItem.querySelector('.item-price')
+            itemPrice.innerHTML = itemPrice.innerText - itemPrice.innerText / Number(itemCount.innerText)
             itemCount.innerHTML = Number(itemCount.innerText) - 1
           }
 
@@ -105,9 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (result['new'] == true) {
             // TODO Add new order template
             orderList.innerHTML += `\
-              <tr id="order-item-${ orderId }"><td>${ result['name'] }\
-              </td><td>&#8377; ${ result['price'] }\
-              x<span class="item-count text-success">1</span></td></tr>`
+              <tr id="order-item-${ orderId }"><td class="font-weight-bold">${ result['name'] }</td><td class="text-right item-count">1</td><td class="text-right item-price">${ result['price'] }</td></tr>`
 
             // Add the OrderItem ID to the remove item button
             removeBtn.dataset.id = orderId
@@ -118,6 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const orderItem = document.getElementById(`order-item-${orderId}`)
             const itemCount = orderItem.querySelector('.item-count')
             itemCount.innerHTML = Number(itemCount.innerText) + 1
+
+            const itemPrice = orderItem.querySelector('.item-price')
+            itemPrice.innerHTML = Number(itemPrice.innerHTML) + result['price']
           }
 
           // If a new Order object has been created, enable
