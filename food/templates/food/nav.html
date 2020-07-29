@@ -20,13 +20,16 @@
     {% if request.user.is_authenticated %}
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link text-white" href="{% url 'orders' %}">Your orders</a>
+        <a class="nav-link text-white" href="{% url 'orders' %}">{ Your orders }</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{ user.username|title }} {% if user.profile.phoneNumber %}+91 {% endif %}{{ user.profile.phoneNumber }}
+          {{ user.username|title }} {% if user.profile.phoneNumber %}+91 {{ user.profile.phoneNumber }}{% else %}<span class="badge badge-light">1</span>{% endif %}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          {% if not user.profile.phoneNumber %}
+          <a class="dropdown-item bg-info text-white" href="{% url 'phoneNumber' %}">***Enter phone number***</a>
+          {% endif %}
           <a class="dropdown-item" href="#">Your profile</a>
           <a class="dropdown-item" href="{% url 'orders' %}">Your orders</a>
           <div class="dropdown-divider"></div>
