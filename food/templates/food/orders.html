@@ -6,17 +6,102 @@ FoodBox | Orders
 {% endblock %}
 
 {% block body %}
-  <h1>Your orders</h1>
-  {% for order in orders %}
-    <h3>Order ID: {{order.id}} Status: {{order.status}} Price: &#8377; {{ order.totalPrice }}</h3>
-    <p><a href="{% url 'restaurant' order.restaurant.id %}">{{ order.restaurant.name }}</a></p>
-    <ul>
-      {% for item in order.items.all %}
-          <li>{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
-      {% endfor %}
-      <li>{{ order.address }}</li>
-    </ul>
-  {% endfor %}
+  <h1 class="my-3" id="f1">My Orders</h1>
+  {% if phoneNumber %}
+    <p>Phone Number: +91 {{ phoneNumber }}</p>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      <a class="alert-link" href="{% url 'phoneNumber' %}">Confirm your phone number to order!</a>
+    </div>
+    <p></p>
+  {% endif %}
+
+  {% if deliveringOrders %}
+    <h2>Delivering Orders</h2>
+    {% for order in deliveringOrders %}
+      <div class="card border-danger" style="margin-bottom: 20px">
+        <div class="card-body">
+          <h5 class="card-title">{{ order.restaurant.name}} Order #{{ order.id }}</h5>
+          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
+            <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
+          <p class="card-text">
+            <ul class="list-group list-group-flush">
+              {% for item in order.items.all %}
+                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+          <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Restaurant page</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if pendingOrders %}
+    <h2>Pending Orders</h2>
+    {% for order in pendingOrders %}
+      <div class="card border-warning" style="margin-bottom: 20px">
+        <div class="card-body">
+          <h5 class="card-title">{{ order.restaurant.name}} Order #{{ order.id }}</h5>
+          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
+          <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
+          <p class="card-text">
+            <ul class="list-group list-group-flush">
+              {% for item in order.items.all %}
+                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+          <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Restaurant page</a>
+          <a href="#" class="card-link">Cancel</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if deliveredOrders %}
+    <h2>Finished Orders</h2>
+    {% for order in deliveredOrders %}
+      <div class="card" style="margin-bottom: 20px">
+        <div class="card-body">
+          <h5 class="card-title">{{ order.restaurant.name}} Order #{{ order.id }}</h5>
+          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
+          <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
+          <p class="card-text">
+            <ul class="list-group list-group-flush">
+              {% for item in order.items.all %}
+                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+          <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Restaurant page</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if choosingOrders %}
+    <h2>Go back to your current orders</h2>
+    {% for order in choosingOrders %}
+      <div class="card border-info" style="margin-bottom: 20px">
+        <div class="card-body">
+          <h5 class="card-title">{{ order.restaurant.name}} Order #{{ order.id }}</h5>
+          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
+          {% if order.address %}
+            <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
+          {% endif %}
+          <p class="card-text">
+            <ul class="list-group list-group-flush">
+              {% for item in order.items.all %}
+                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+          <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Restaurant page</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
 
 
   <!--
