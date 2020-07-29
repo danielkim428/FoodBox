@@ -6,11 +6,29 @@
 {% endblock %}
 
 {% block body %}
-  <h1>Phone Number</h1>
-  <form action="{% url 'phoneNumber' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="pageNumber" value="{{ url }}">
-    +91 <input type="tel" name="phoneNumber" placeholder="Type your phone number">
-  </form>
-  <h3>TODO Confirm phone number</h3>
+<h3 class="my-3" id="f1">Phone Number</h3>
+<div class="row">
+  <div class="col-12 col-lg-5 mx-auto">
+    <div class="card shadow">
+      <div class="card-body">
+        <h5>Logged in as {{ user.username|title }}</h5>
+        <hr>
+        <h5 id="f1"><small><b>Verify your phone number</b></small></h5>
+        <p id="f1" class="mt-n1"><small>Please add your phone number to your account to start ordering!</small></p>
+        <form action="{% url 'phoneNumber' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="pageNumber" value="{{ url }}">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">+91</span>
+            </div>
+            <input class="form-control" type="tel" name="phoneNumber" placeholder="Type your phone number" value="{% if user.profile.phoneNumber %}{{ user.profile.phoneNumber }}{% endif %}">
+          </div>
+          <button type="submit" name="button" class="btn btn-success btn-block mt-3">SEND</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<h5 class="mt-5">(TODO Confirm phone number)</h5>
 {% endblock %}
