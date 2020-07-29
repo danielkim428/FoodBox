@@ -9,6 +9,7 @@
   <h1>Phone Number</h1>
   <form action="{% url 'phoneNumber' %}" method="post">
     {% csrf_token %}
+    <input type="hidden" name="pageNumber" value="{{ url }}">
     +91 <input type="tel" name="phoneNumber" placeholder="Type your phone number">
   </form>
   <h3>TODO Confirm phone number</h3>

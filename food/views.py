@@ -62,7 +62,7 @@ def restaurantOrders(request, restaurantId):
                 order.status = 0
 
                 # TODO WhatsApp bot to customer
-                
+
             order.save()
             return HttpResponseRedirect(reverse('restaurantOrders', args=[restaurantId]))
         else:
@@ -208,6 +208,21 @@ def login_view(request):
 # People who register are redirected to this view to confirm their phone number
 # TODO WhatsApp bot integration
 def phoneNumber(request):
+    try:
+        lastURL = request.META.get('HTTP_REFERER')[-1:]
+        if lastURL.isnumeric():
+            context = {
+                "url": lastURL
+            }
+        else:
+            context = {
+                "url": ""
+            }
+    except:
+        context = {
+            "url": ""
+        }
+
     if request.user.is_authenticated:
         if request.method == 'POST':
             phoneNumber = request.POST['phoneNumber']
@@ -218,9 +233,13 @@ def phoneNumber(request):
             user.profile.phoneNumber = phoneNumber
             user.save()
 
-            return HttpResponseRedirect(reverse('orders'))
+            pageNumber = request.POST['pageNumber']
+            if pageNumber == "":
+                return HttpResponseRedirect(reverse('index'))
+            else:
+                return HttpResponseRedirect(reverse('address', args=[pageNumber]))
         else:
-            return render(request, 'food/phoneNumber.html')
+            return render(request, 'food/phoneNumber.html', context)
     else:
         return HttpResponseRedirect(reverse('login'))
 
