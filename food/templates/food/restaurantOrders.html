@@ -1,0 +1,91 @@
+{% extends "food/base.html" %}
+
+{% block title %}
+  Restaurant Orders
+{% endblock %}
+
+{% block body %}
+  <h3 class="my-3" id="f1">Orders for Restaurant {{ restaurant.name }}</h3>
+  <h2>Delivering Orders</h2>
+  {% if deliveringOrders %}
+    {% for order in deliveringOrders %}
+      <div class="card border-danger" style="margin-bottom: 20px">
+        <div class="card-body">
+          <h5 class="card-title">{{ order.user }} Order #{{ order.id }}</h5>
+          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
+            <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
+          <p class="card-text">
+            <ul class="list-group list-group-flush">
+              {% for item in order.items.all %}
+                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+          <form action="{% url 'restaurantOrders' restaurant.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="order-id" value="{{ order.id }}">
+            <input type="hidden" name="action" value="delivered">
+            <button class="btn btn-outline-warning" type="submit">Delivered!</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    No orders to deliver!
+  {% endif %}
+
+  <h2>Pending Orders</h2>
+  {% if pendingOrders %}
+    {% for order in pendingOrders %}
+      <div class="card border-warning" style="margin-bottom: 20px">
+        <div class="card-body">
+          <h5 class="card-title">{{ order.user }}'s Order</h5>
+          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
+          <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
+          <p class="card-text">
+            <ul class="list-group list-group-flush">
+              {% for item in order.items.all %}
+                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+          <form action="{% url 'restaurantOrders' restaurant.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="order-id" value="{{ order.id }}">
+            <input type="hidden" name="action" value="confirm">
+            <button class="btn btn-outline-primary" type="submit">Confirm!</button>
+          </form>
+          <form action="{% url 'restaurantOrders' restaurant.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="order-id" value="{{ order.id }}">
+            <input type="hidden" name="action" value="reject">
+            <button class="btn btn-outline-danger" type="submit">Reject</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    No orders pending!
+  {% endif %}
+
+  {% if deliveredOrders %}
+    <h2>Finished Orders</h2>
+    {% for order in deliveredOrders %}
+      <div class="card" style="margin-bottom: 20px">
+        <div class="card-body">
+          <h5 class="card-title">{{ order.user }}'s Order</h5>
+          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
+          <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
+          <p class="card-text">
+            <ul class="list-group list-group-flush">
+              {% for item in order.items.all %}
+                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+{% endblock %}

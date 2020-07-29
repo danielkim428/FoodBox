@@ -7,6 +7,11 @@ FoodBox | Home
 
 {% block body %}
 <h3 class="my-3" id="f1">Restaurants</h3>
+{% if ownedRestaurant %}
+  <div class="alert alert-warning" role="alert">
+    ADMIN: <a class="alert-link" href="{% url 'restaurantOrders' ownedRestaurant.id %}">Look at your restaurant's orders!</a>
+  </div>
+{% endif %}
 
 <div class="row">
   <div class="d-none d-lg-block col-2">

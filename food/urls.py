@@ -10,8 +10,10 @@ urlpatterns = [
     path("address/<int:restaurantId>", views.address, name='address'),
 
     path("orders", views.orders, name='orders'),
+    path("restaurant/<int:restaurantId>/orders", views.restaurantOrders, name='restaurantOrders'),
 
     path("login", views.login_view, name='login'),
+    path("phonenumber", views.phoneNumber, name='phoneNumber'),
     path("logout", views.logout_view, name='logout'),
     path("register", views.register, name='register'),
 
