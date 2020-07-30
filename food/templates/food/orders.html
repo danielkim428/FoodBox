@@ -16,9 +16,9 @@ FoodBox | Orders
 
 {% if deliveringOrders %}
   <h2 class="text-info" id="logo">Delivering Orders</h2>
-  <div class="row my-3">
+  <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
     {% for order in deliveringOrders %}
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
         <div class="card shadow mb-4 border-info">
           <div class="card-body py-4 px-4" id="order-div">
             <div class="d-flex justify-content-between">
@@ -64,64 +64,65 @@ FoodBox | Orders
 
 {% if pendingOrders %}
   <h2 class="text-success" id="logo">Pending Orders</h2>
-  <div class="row my-3">
-    {% for order in pendingOrders %}
-      <div class="col-12 col-lg-4">
-        <div class="card shadow mb-4 border-success">
-          <div class="card-body py-4 px-4" id="order-div">
-            <div class="d-flex justify-content-between">
-              <h5 class="card-text font-weight-bold f2">{{ order.restaurant.name }} Order</h5>
-              <h5 class="font-weight-light">#{{ order.id }}</h5>
+  <div >
+    <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
+      {% for order in pendingOrders %}
+        <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
+          <div class="card shadow mb-4 border-success">
+            <div class="card-body py-4 px-4" id="order-div">
+              <div class="d-flex justify-content-between">
+                <h5 class="card-text font-weight-bold f2">{{ order.restaurant.name }} Order</h5>
+                <h5 class="font-weight-light">#{{ order.id }}</h5>
+              </div>
+              <p><small>Delivering to <a href="https://maps.google.com/?q={{ order.address }}" class="text-success" target="_blank">{{ order.address }}</a></small></p>
+              <hr class="orderList">
+              <table class="table table-borderless f2 mt-n3">
+                <thead>
+                   <tr class="font-weight-bold">
+                     <th scope="col"><small>PRODUCT</small></th>
+                     <th scope="col"><small>QTY</small></th>
+                     <th scope="col"><small>PRICE</small></th>
+                   </tr>
+                 </thead>
+                <tbody id="order-list">
+                    {% for item in order.items.all %}
+                      <tr id="order-item-{{ item.id }}">
+                        <td class="font-weight-bold">{{ item.menuItem.name }}</td>
+                        <td class="text-right item-count">{{ item.count }}</td>
+                        <td class="text-right item-price">{{ item.menuItem.price|multiply:item.count }}</td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr class="font-weight-bold">
+                      <td>Total</td>
+                      <td></td>
+                      <td class="text-right text-danger"><h5 class=" font-weight-bold" id="f1"><span id="total-price">&#8377;{{ order.totalPrice }}</span></h5></td>
+                  </tr>
+                </tfoot>
+              </table>
+              <hr class="orderList mt-n2">
+              <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Restaurant page</a>
+              <a href="#" class="card-link">Cancel</a>
             </div>
-            <p><small>Delivering to <a href="https://maps.google.com/?q={{ order.address }}" class="text-success" target="_blank">{{ order.address }}</a></small></p>
-            <hr class="orderList">
-            <table class="table table-borderless f2 mt-n3">
-              <thead>
-                 <tr class="font-weight-bold">
-                   <th scope="col"><small>PRODUCT</small></th>
-                   <th scope="col"><small>QTY</small></th>
-                   <th scope="col"><small>PRICE</small></th>
-                 </tr>
-               </thead>
-              <tbody id="order-list">
-                  {% for item in order.items.all %}
-                    <tr id="order-item-{{ item.id }}">
-                      <td class="font-weight-bold">{{ item.menuItem.name }}</td>
-                      <td class="text-right item-count">{{ item.count }}</td>
-                      <td class="text-right item-price">{{ item.menuItem.price|multiply:item.count }}</td>
-                    </tr>
-                  {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr class="font-weight-bold">
-                    <td>Total</td>
-                    <td></td>
-                    <td class="text-right text-danger"><h5 class=" font-weight-bold" id="f1"><span id="total-price">&#8377;{{ order.totalPrice }}</span></h5></td>
-                </tr>
-              </tfoot>
-            </table>
-            <hr class="orderList mt-n2">
-            <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Restaurant page</a>
-            <a href="#" class="card-link">Cancel</a>
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 {% endif %}
 
 {% if choosingOrders %}
   <h2 class="text-warning" id="logo">Go back to your current orders</h2>
-  <div class="row my-3">
+  <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
     {% for order in choosingOrders %}
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
         <div class="card shadow mb-4 border-warning">
           <div class="card-body py-4 px-4" id="order-div">
             <div class="d-flex justify-content-between">
               <h5 class="card-text font-weight-bold f2">{{ order.restaurant.name }} Order</h5>
               <h5 class="font-weight-light">#{{ order.id }}</h5>
             </div>
-            <p><small>Delivering to <a href="https://maps.google.com/?q={{ order.address }}" class="text-success" target="_blank">{{ order.address }}</a></small></p>
             <hr class="orderList">
             <table class="table table-borderless f2 mt-n3">
               <thead>
@@ -149,7 +150,7 @@ FoodBox | Orders
               </tfoot>
             </table>
             <hr class="orderList mt-n2">
-            <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Restaurant page</a>
+            <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Continue ordering</a>
             <a href="#" class="card-link">Cancel</a>
           </div>
         </div>
@@ -160,9 +161,9 @@ FoodBox | Orders
 
 {% if deliveredOrders %}
   <h2 class="text-secondary" id="logo">Finished Orders</h2>
-  <div class="row my-3">
+  <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
     {% for order in deliveredOrders %}
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
         <div class="card shadow mb-4 border-secondary">
           <div class="card-body py-4 px-4" id="order-div">
             <div class="d-flex justify-content-between">
@@ -198,7 +199,6 @@ FoodBox | Orders
             </table>
             <hr class="orderList mt-n2">
             <a href="{% url 'restaurant' order.restaurant.id %}" class="card-link">Restaurant page</a>
-            <a href="#" class="card-link">Cancel</a>
           </div>
         </div>
       </div>
