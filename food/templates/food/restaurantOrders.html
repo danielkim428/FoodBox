@@ -1,91 +1,177 @@
 {% extends "food/base.html" %}
+{% load food_extra %}
 
 {% block title %}
   Restaurant Orders
 {% endblock %}
 
 {% block body %}
-  <h3 class="my-3" id="f1">Orders for Restaurant {{ restaurant.name }}</h3>
-  <h2>Delivering Orders</h2>
-  {% if deliveringOrders %}
+<h3 class="my-3" id="f1">Orders for {{ restaurant.name }}</h3>
+
+{% if deliveringOrders %}
+  <h2 class="text-info" id="logo">Delivering Orders ({{ deliveringOrders.count }})</h2>
+  <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
     {% for order in deliveringOrders %}
-      <div class="card border-danger" style="margin-bottom: 20px">
-        <div class="card-body">
-          <h5 class="card-title">{{ order.user }} Order #{{ order.id }}</h5>
-          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
-            <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
-          <p class="card-text">
-            <ul class="list-group list-group-flush">
-              {% for item in order.items.all %}
-                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
-              {% endfor %}
-            </ul>
-          </p>
-          <form action="{% url 'restaurantOrders' restaurant.id %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="order-id" value="{{ order.id }}">
-            <input type="hidden" name="action" value="delivered">
-            <button class="btn btn-outline-warning" type="submit">Delivered!</button>
-          </form>
+      <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
+        <div class="card shadow mb-4 border-info">
+          <div class="card-body py-4 px-4" id="order-div">
+            <div class="d-flex justify-content-between">
+              <h5 class="card-text font-weight-bold f2">{{ order.user|title }}'s Order</h5>
+              <h5 class="font-weight-light">#{{ order.id }}</h5>
+            </div>
+            <p><small>Delivering to <a href="https://maps.google.com/?q={{ order.address }}" class="text-success" target="_blank">{{ order.address }}</a></small></p>
+            <p class="mt-n2"><small>Phone Number: +91 {{ order.user.phoneNumber }}</small></p>
+            <hr class="orderList">
+            <table class="table table-borderless f2 mt-n3">
+              <thead>
+                 <tr class="font-weight-bold">
+                   <th scope="col"><small>PRODUCT</small></th>
+                   <th scope="col"><small>QTY</small></th>
+                   <th scope="col"><small>PRICE</small></th>
+                 </tr>
+               </thead>
+              <tbody id="order-list">
+                  {% for item in order.items.all %}
+                    <tr id="order-item-{{ item.id }}">
+                      <td class="font-weight-bold">{{ item.menuItem.name }}</td>
+                      <td class="text-right item-count">{{ item.count }}</td>
+                      <td class="text-right item-price">{{ item.menuItem.price|multiply:item.count }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr class="font-weight-bold">
+                    <td>Total</td>
+                    <td></td>
+                    <td class="text-right text-danger"><h5 class=" font-weight-bold" id="f1"><span id="total-price">&#8377;{{ order.totalPrice }}</span></h5></td>
+                </tr>
+              </tfoot>
+            </table>
+            <hr class="orderList mt-n2">
+            <form action="{% url 'restaurantOrders' restaurant.id %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="order-id" value="{{ order.id }}">
+              <input type="hidden" name="action" value="delivered">
+              <button class="btn btn-success" type="submit">Delivered!</button>
+            </form>
+          </div>
         </div>
       </div>
     {% endfor %}
-  {% else %}
-    No orders to deliver!
-  {% endif %}
+  </div>
+{% else %}
+  No orders to deliver!
+{% endif %}
 
-  <h2>Pending Orders</h2>
-  {% if pendingOrders %}
+{% if pendingOrders %}
+  <h2 class="text-success" id="logo">Pending Orders ({{ pendingOrders.count }})</h2>
+  <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
     {% for order in pendingOrders %}
-      <div class="card border-warning" style="margin-bottom: 20px">
-        <div class="card-body">
-          <h5 class="card-title">{{ order.user }}'s Order</h5>
-          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
-          <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
-          <p class="card-text">
-            <ul class="list-group list-group-flush">
-              {% for item in order.items.all %}
-                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
-              {% endfor %}
-            </ul>
-          </p>
-          <form action="{% url 'restaurantOrders' restaurant.id %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="order-id" value="{{ order.id }}">
-            <input type="hidden" name="action" value="confirm">
-            <button class="btn btn-outline-primary" type="submit">Confirm!</button>
-          </form>
-          <form action="{% url 'restaurantOrders' restaurant.id %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="order-id" value="{{ order.id }}">
-            <input type="hidden" name="action" value="reject">
-            <button class="btn btn-outline-danger" type="submit">Reject</button>
-          </form>
+      <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
+        <div class="card shadow mb-4 border-success">
+          <div class="card-body py-4 px-4" id="order-div">
+            <div class="d-flex justify-content-between">
+              <h5 class="card-text font-weight-bold f2">{{ order.user|title }}'s Order</h5>
+              <h5 class="font-weight-light">#{{ order.id }}</h5>
+            </div>
+            <p><small>Delivering to <a href="https://maps.google.com/?q={{ order.address }}" class="text-success" target="_blank">{{ order.address }}</a></small></p>
+            <p class="mt-n2"><small>Phone Number: +91 {{ order.user.phoneNumber }}</small></p>
+            <hr class="orderList">
+            <table class="table table-borderless f2 mt-n3">
+              <thead>
+                 <tr class="font-weight-bold">
+                   <th scope="col"><small>PRODUCT</small></th>
+                   <th scope="col"><small>QTY</small></th>
+                   <th scope="col"><small>PRICE</small></th>
+                 </tr>
+               </thead>
+              <tbody id="order-list">
+                  {% for item in order.items.all %}
+                    <tr id="order-item-{{ item.id }}">
+                      <td class="font-weight-bold">{{ item.menuItem.name }}</td>
+                      <td class="text-right item-count">{{ item.count }}</td>
+                      <td class="text-right item-price">{{ item.menuItem.price|multiply:item.count }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr class="font-weight-bold">
+                    <td>Total</td>
+                    <td></td>
+                    <td class="text-right text-danger"><h5 class=" font-weight-bold" id="f1"><span id="total-price">&#8377;{{ order.totalPrice }}</span></h5></td>
+                </tr>
+              </tfoot>
+            </table>
+            <hr class="orderList mt-n2">
+            <div class="d-flex">
+              <form action="{% url 'restaurantOrders' restaurant.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order-id" value="{{ order.id }}">
+                <input type="hidden" name="action" value="confirm">
+                <button class="btn btn-outline-primary" type="submit">Confirm!</button>
+              </form>
+              <form class="ml-2" action="{% url 'restaurantOrders' restaurant.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order-id" value="{{ order.id }}">
+                <input type="hidden" name="action" value="reject">
+                <button class="btn btn-outline-danger" type="submit">Reject</button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     {% endfor %}
-  {% else %}
-    No orders pending!
-  {% endif %}
+  </div>
+{% else %}
+  No orders to pending!
+{% endif %}
 
-  {% if deliveredOrders %}
-    <h2>Finished Orders</h2>
+{% if deliveredOrders %}
+  <h2 class="text-secondary" id="logo">Finished Orders ({{ pendingOrders.count }})</h2>
+  <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
     {% for order in deliveredOrders %}
-      <div class="card" style="margin-bottom: 20px">
-        <div class="card-body">
-          <h5 class="card-title">{{ order.user }}'s Order</h5>
-          <h6 class="card-subtitle mb-2">Price: &#8377; <span class="text-success">{{ order.totalPrice }}</span></h6>
-          <h6 class="card-subtitle mb-2 text-muted">Delivering to {{ order.address }}</h6>
-          <p class="card-text">
-            <ul class="list-group list-group-flush">
-              {% for item in order.items.all %}
-                  <li class="list-group-item">{{ item.menuItem.name }} &#8377; {{ item.menuItem.price }} x{{ item.count }}</li>
-              {% endfor %}
-            </ul>
-          </p>
+      <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
+        <div class="card shadow mb-4 border-secondary">
+          <div class="card-body py-4 px-4" id="order-div">
+            <div class="d-flex justify-content-between">
+              <h5 class="card-text font-weight-bold f2">{{ order.user|title }}'s Order</h5>
+              <h5 class="font-weight-light">#{{ order.id }}</h5>
+            </div>
+            <p><small>Delivering to <a href="https://maps.google.com/?q={{ order.address }}" class="text-success" target="_blank">{{ order.address }}</a></small></p>
+            <p class="mt-n2"><small>Phone Number: +91 {{ order.user.phoneNumber }}</small></p>
+            <hr class="orderList">
+            <table class="table table-borderless f2 mt-n3">
+              <thead>
+                 <tr class="font-weight-bold">
+                   <th scope="col"><small>PRODUCT</small></th>
+                   <th scope="col"><small>QTY</small></th>
+                   <th scope="col"><small>PRICE</small></th>
+                 </tr>
+               </thead>
+              <tbody id="order-list">
+                  {% for item in order.items.all %}
+                    <tr id="order-item-{{ item.id }}">
+                      <td class="font-weight-bold">{{ item.menuItem.name }}</td>
+                      <td class="text-right item-count">{{ item.count }}</td>
+                      <td class="text-right item-price">{{ item.menuItem.price|multiply:item.count }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr class="font-weight-bold">
+                    <td>Total</td>
+                    <td></td>
+                    <td class="text-right text-danger"><h5 class=" font-weight-bold" id="f1"><span id="total-price">&#8377;{{ order.totalPrice }}</span></h5></td>
+                </tr>
+              </tfoot>
+            </table>
+            <hr class="orderList mt-n2">
+          </div>
         </div>
       </div>
     {% endfor %}
-  {% endif %}
+  </div>
+{% else %}
+{% endif %}
 
 {% endblock %}

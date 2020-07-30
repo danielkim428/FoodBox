@@ -7,15 +7,15 @@ FoodBox | Orders
 {% endblock %}
 
 {% block body %}
-  <h1 class="my-3" id="f1">My Orders</h1>
-  {% if  not phoneNumber %}
-    <div class="alert alert-warning" role="alert">
-      <a class="alert-link" href="{% url 'phoneNumber' %}">Confirm your phone number to order!</a>
-    </div>
-  {% endif %}
+<h3 class="my-3" id="f1">My Orders</h3>
+{% if  not phoneNumber %}
+  <div class="alert alert-warning" role="alert">
+    <a class="alert-link" href="{% url 'phoneNumber' %}">Confirm your phone number to order!</a>
+  </div>
+{% endif %}
 
 {% if deliveringOrders %}
-  <h2 class="text-info" id="logo">Delivering Orders</h2>
+  <h2 class="text-info" id="logo">Delivering Orders ({{ deliveringOrders.count }})</h2>
   <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
     {% for order in deliveringOrders %}
       <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
@@ -63,7 +63,7 @@ FoodBox | Orders
 {% endif %}
 
 {% if pendingOrders %}
-  <h2 class="text-success" id="logo">Pending Orders</h2>
+  <h2 class="text-success" id="logo">Pending Orders ({{ pendingOrders.count }})</h2>
   <div >
     <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
       {% for order in pendingOrders %}
@@ -113,7 +113,7 @@ FoodBox | Orders
 {% endif %}
 
 {% if choosingOrders %}
-  <h2 class="text-warning" id="logo">Go back to your current orders</h2>
+  <h2 class="text-warning" id="logo">Go back to your current orders ({{ choosingOrders.count }})</h2>
   <div class="row my-3 d-flex flex-nowrap" style="overflow-x: auto; scroll-snap-type: x mandatory;">
     {% for order in choosingOrders %}
       <div class="col-12 col-lg-4" style="scroll-snap-align: start;">
