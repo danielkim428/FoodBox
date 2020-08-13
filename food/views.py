@@ -50,11 +50,13 @@ def restaurantOrders(request, restaurantId):
             if action == 'confirm':
                 # Pending --> Delivering status
                 order.status = 2
+                order.confirmedTime = datetime.datetime.now()
 
                 # TODO WhatsApp bot to customer
             elif action == 'delivered':
                 # Delivering --> Delivered status
                 order.status = 3
+                order.deliveredTime = datetime.datetime.now()
 
                 # TODO WhatsApp bot to customer
             elif action == 'reject':
@@ -110,18 +112,23 @@ def restaurant(request, restaurantId):
     except Post.DoesNotExist:
         raise Http404("Restaurant does not exist")
 
+    pendingOrders = restaurant.orders.filter(user=request.user, status=1)
+
     context = {
         "restaurant": restaurant,
         "categories": restaurant.categories.all(),
         "currentTime": datetime.datetime.now(),
-        "phoneNumber": request.user.profile.phoneNumber
+        "phoneNumber": request.user.profile.phoneNumber,
         # "menuItems": MenuItem.objects.filter(category__restaurant=restaurant)
+        "pendingOrders": pendingOrders
     }
 
     if request.user.is_authenticated:
         if request.method == 'POST':
             orderId = request.POST['orderId']
             order = Order.objects.get(id=orderId)
+            order.orderedTime = datetime.datetime.now()
+            order.save()
 
             if request.user.profile.phoneNumber == '':
                 return HttpResponseRedirect(reverse('phoneNumber'))

@@ -74,6 +74,9 @@ FoodBox | Orders
               <h5 class="font-weight-light">#{{ order.id }}</h5>
             </div>
             <p><small>Delivering to <a href="https://maps.google.com/?q={{ order.address }}" class="text-success" target="_blank">{{ order.address }}</a></small></p>
+            {% if order.orderedTime %}
+              <p><small>Ordered at {{ order.orderedTime }}</small></p>
+            {% endif %}
             <hr class="orderList">
             <table class="table table-borderless f2 mt-n3">
               <thead>

@@ -18,15 +18,24 @@ FoodBox | {{ restaurant.name }}
     <li class="breadcrumb-item active">{{ restaurant.name }}</li>
   </ol></small>
 </nav>
+
+{% if pendingOrders %}
+  <div class="alert alert-info" role="alert">
+    Check on your current order's status: <a class="alert-link" href="{% url 'orders' %}">Go now.</a>
+  </div>
+{% endif %}
+
 <div class="row animate__animated animate__fadeIn">
   <div class="col-12 col-lg-8 px-0 px-lg-3 mb-4">
     <div class="card">
+      <img class="card-img-top" style="height: 200px;" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body px-0 pb-0">
-        <h1 class="card-title text-center mb-1" id="logo">{{ restaurant.name }}</h1>
-        <div class="text-center mt-0 mb-2">
-          <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> 5.0
+        <h1 class="card-title mb-1 pl-4" id="logo">{{ restaurant.name }}</h1>
+        <div class="mt-0 mb-2 pl-4">
+          5.0 / 5.0 <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>
         </div>
-        <div class="text-center mb-2">
+        <p class="card-subtitle mb-2 pl-4">{{ restaurant.description }}</p>
+        <div class="mb-2 pl-4">
           <!-- Open Time -->
           {% if restaurant.openTime %}
             {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
@@ -39,7 +48,7 @@ FoodBox | {{ restaurant.name }}
           {% endif %}
           <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
         </div>
-        <div class="text-center mb-3">
+        <div class="mb-3 pl-4">
           {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
         </div>
         {% for category in categories %}
@@ -90,12 +99,11 @@ FoodBox | {{ restaurant.name }}
     </div>
   </div>
   <div class="col-12 col-lg-4">
-    <div class="card mb-3 d-none d-lg-block">
+    <!-- <div class="card mb-3 d-none d-lg-block">
       <img class="card-img-top" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body">
         <h5 class="card-title">{{ restaurant.name }}</h5>
         <p class="card-subtitle mb-2">{{ restaurant.description }}</p>
-        <!-- Open Time -->
         <p class="my-n1">
         {% if restaurant.openTime %}
           {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
@@ -106,9 +114,8 @@ FoodBox | {{ restaurant.name }}
           {{ restaurant.openTime }} - {{ restaurant.closeTime }}
         {% endif %}
         </p>
-        <!--{% for cui in restaurant.cuisine.all %}<a href="{% url 'cuisine' cui.name %}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ cui.name }}</a>{% endfor %}-->
       </div>
-    </div>
+    </div> -->
 
     <div class="anchorList" id="currentOrderList">
     </div>
