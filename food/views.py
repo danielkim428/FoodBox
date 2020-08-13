@@ -112,15 +112,11 @@ def restaurant(request, restaurantId):
     except Post.DoesNotExist:
         raise Http404("Restaurant does not exist")
 
-    pendingOrders = restaurant.orders.filter(user=request.user, status=1)
-
     context = {
         "restaurant": restaurant,
         "categories": restaurant.categories.all(),
         "currentTime": datetime.datetime.now(),
-        "phoneNumber": request.user.profile.phoneNumber,
         # "menuItems": MenuItem.objects.filter(category__restaurant=restaurant)
-        "pendingOrders": pendingOrders
     }
 
     if request.user.is_authenticated:
@@ -135,7 +131,10 @@ def restaurant(request, restaurantId):
 
             return HttpResponseRedirect(reverse('address', args=[restaurantId]))
         else:
+            pendingOrders = restaurant.orders.filter(user=request.user, status=1)
+            context["pendingOrders"] = pendingOrders
             context['loggedIn'] = True
+            context["phoneNumber"] = request.user.profile.phoneNumber
 
             try:
                 currentOrder = Order.objects.get(user=request.user, restaurant=restaurant, status=0)
