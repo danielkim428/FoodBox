@@ -50,11 +50,13 @@ def restaurantOrders(request, restaurantId):
             if action == 'confirm':
                 # Pending --> Delivering status
                 order.status = 2
+                order.confirmedTime = datetime.datetime.now()
 
                 # TODO WhatsApp bot to customer
             elif action == 'delivered':
                 # Delivering --> Delivered status
                 order.status = 3
+                order.deliveredTime = datetime.datetime.now()
 
                 # TODO WhatsApp bot to customer
             elif action == 'reject':
@@ -114,7 +116,6 @@ def restaurant(request, restaurantId):
         "restaurant": restaurant,
         "categories": restaurant.categories.all(),
         "currentTime": datetime.datetime.now(),
-        "phoneNumber": request.user.profile.phoneNumber
         # "menuItems": MenuItem.objects.filter(category__restaurant=restaurant)
     }
 
@@ -122,13 +123,18 @@ def restaurant(request, restaurantId):
         if request.method == 'POST':
             orderId = request.POST['orderId']
             order = Order.objects.get(id=orderId)
+            order.orderedTime = datetime.datetime.now()
+            order.save()
 
             if request.user.profile.phoneNumber == '':
                 return HttpResponseRedirect(reverse('phoneNumber'))
 
             return HttpResponseRedirect(reverse('address', args=[restaurantId]))
         else:
+            pendingOrders = restaurant.orders.filter(user=request.user, status=1)
+            context["pendingOrders"] = pendingOrders
             context['loggedIn'] = True
+            context["phoneNumber"] = request.user.profile.phoneNumber
 
             try:
                 currentOrder = Order.objects.get(user=request.user, restaurant=restaurant, status=0)

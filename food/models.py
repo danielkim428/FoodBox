@@ -51,6 +51,10 @@ class Order(models.Model):
 
     status = models.IntegerField(default=0)
 
+    orderedTime = models.DateTimeField(null=True)
+    confirmedTime = models.DateTimeField(null=True)
+    deliveredTime = models.DateTimeField(null=True)
+
     totalPrice = models.IntegerField(default=0)
 
     def __str__(self):
