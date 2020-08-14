@@ -28,28 +28,30 @@ FoodBox | {{ restaurant.name }}
 <div class="row animate__animated animate__fadeIn">
   <div class="col-12 col-lg-8 px-0 px-lg-3 mb-4">
     <div class="card">
-      <img class="card-img-top" style="height: 200px;" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
+      <img class="card-img-top" style="height: 200px; object-fit: cover;" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body px-0 pb-0">
-        <h1 class="card-title mb-1 pl-4" id="logo">{{ restaurant.name }}</h1>
-        <div class="mt-0 mb-2 pl-4">
-          5.0 / 5.0 <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>
-        </div>
-        <p class="card-subtitle mb-2 pl-4">{{ restaurant.description }}</p>
-        <div class="mb-2 pl-4">
-          <!-- Open Time -->
-          {% if restaurant.openTime %}
-            {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
-              <span class="text-success">Open</span>
-            {% else %}
-              <span class="text-danger">Closed</span>
+        <div class="text-center">
+          <h1 class="card-title mb-1 pl-4" id="logo">{{ restaurant.name }}</h1>
+          <div class="mt-0 mb-2 pl-4">
+            5.0 / 5.0 <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>
+          </div>
+          <p class="card-subtitle mb-2 pl-4">{{ restaurant.description }}</p>
+          <div class="mb-2 pl-4">
+            <!-- Open Time -->
+            {% if restaurant.openTime %}
+              {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
+                <span class="text-success">Open</span>
+              {% else %}
+                <span class="text-danger">Closed</span>
+              {% endif %}
+              {{ restaurant.openTime }} - {{ restaurant.closeTime }}
+              &nbsp;|&nbsp;
             {% endif %}
-            {{ restaurant.openTime }} - {{ restaurant.closeTime }}
-            &nbsp;|&nbsp;
-          {% endif %}
-          <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
-        </div>
-        <div class="mb-3 pl-4">
-          {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
+            <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
+          </div>
+          <div class="mb-3 pl-4">
+            {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
+          </div>
         </div>
         {% for category in categories %}
           <button class="btn btn-light btn-md btn-block d-flex justify-content-between px-3" type="button" data-toggle="collapse" data-target="#{{ category.name|cut:' ' }}" aria-expanded="false" aria-controls="{{ category.name|cut:' ' }}">
