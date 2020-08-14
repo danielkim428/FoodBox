@@ -65,10 +65,10 @@ FoodBox | {{ restaurant.name }}
               {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
                   <div class="row">
-                    <div class="col-10">
+                    <div class="col-8">
                       <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
                     </div>
-                    <div class="col-2">
+                    <div class="col-4">
                       <nav aria-label="order count">
                         <ul class="order-item-div pagination justify-content-end mt-1 mb-0">
                           <!-- Look into templatetags for more description -->
