@@ -107,7 +107,7 @@ OrderIn | Home
 </nav>
 <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
 
-<!-- popup -->
+<!-- popup won't show up if you are logged in -->
 {% if not request.user.is_authenticated %}
 <div class="modal fade mt-5" id="popup" tabindex="-1" role="dialog" aria-labelledby="popuplabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
