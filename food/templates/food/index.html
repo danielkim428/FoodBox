@@ -7,10 +7,11 @@ OrderIn | Home
 
 {% block body %}
 <h3 class="my-3" id="f1">Restaurants</h3>
-
+<!--
 <div class="alert alert-danger" role="alert">
   THIS WEBSITE IS CURRENTLY IN DEVELOPMENT. THE ORDERS DO NOT WORK AND ARE FOR DEMO PURPOSES ONLY.
 </div>
+-->
 {% if ownedRestaurant %}
   <div class="alert alert-warning" role="alert">
     ADMIN: <a class="alert-link" href="{% url 'restaurantOrders' ownedRestaurant.id %}">Look at your restaurant's orders!</a>
@@ -105,7 +106,35 @@ OrderIn | Home
   </div>
 </nav>
 <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+
+<!-- popup -->
+{% if not request.user.is_authenticated %}
+<div class="modal fade mt-5" id="popup" tabindex="-1" role="dialog" aria-labelledby="popuplabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="popuplabel">Disclaimer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        THIS WEBSITE IS CURRENTLY IN DEVELOPMENT. THE ORDERS DO NOT WORK AND ARE FOR DEMO PURPOSES ONLY.
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 <script>
+    $(window).on('load',function(){
+      // hide popup for 24 hrs
+      if (document.cookie.indexOf("popupShown=true") == -1) {
+          document.cookie = "popupShown=true; max-age=86400"; // 86400: seconds in a day
+          //bootstrap modal/popup show
+          $('#popup').modal('show');
+      }
+    });
+
   $("#filters :checkbox").click(function() {
       $(".restaurants").hide();
       $("#filters :checkbox:checked").each(function() {
