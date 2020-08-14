@@ -53,7 +53,7 @@ FoodBox | Home
     {% for res in restaurants %}
     <div class="restaurants card flex-row flex-wrap flex-md-nowrap mb-4 animate__animated animate__fadeIn {% for cui in res.cuisine.all %}{{ cui.name }} {% endfor %}">
         <div class="card-header border-0 p-0">
-            <img class="imageSize" src="{% with 'food/img/'|add:res.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ res.name }}">
+            <img class="imageSize" src="{% with 'food/img/'|add:res.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ res.name }}" onclick="location.href='{% url 'restaurant' res.id %}'">
         </div>
         <div class="card-body p-4 p-md-5">
             <h4 class="card-title font-weight-bold mb-0" id="logo">{{ res.name }}</h4>
