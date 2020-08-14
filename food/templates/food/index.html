@@ -124,7 +124,6 @@ OrderIn | Home
     </div>
   </div>
 </div>
-{% endif %}
 <script>
     $(window).on('load',function(){
       // hide popup for 24 hrs
@@ -134,7 +133,9 @@ OrderIn | Home
           $('#popup').modal('show');
       }
     });
-
+</script>
+{% endif %}
+<script>
   $("#filters :checkbox").click(function() {
       $(".restaurants").hide();
       $("#filters :checkbox:checked").each(function() {
