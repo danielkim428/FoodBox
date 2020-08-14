@@ -12,7 +12,7 @@ FoodBox
     <div class="card-columns">
       {% for cuisine in cuisines %}
         <div onclick="window.location.href = '{% url 'cuisine' cuisine %}'" class="card cui_card bg-dark text-white border-0" style="display: inline-block; animation: fadeIn; animation-duration: {{ forloop.counter0|animate:2 }}s;">
-          <img class="card-img" id="cuisines" src="{% with 'food/img/'|add:cuisine.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ cuisine.name }}">
+          <img class="card-img" id="cuisines" src="{% with '/food/img/'|add:cuisine.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ cuisine.name }}">
           <div class="card-img-overlay">
             <h1 class="card-title">{{ cuisine.name|title }}</h1>
           </div>

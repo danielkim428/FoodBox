@@ -25,7 +25,7 @@ SECRET_KEY = '!xg89nl*1n=4inxpiw*ruz8$3zvy7=*!=@cyqn5gm0#-5*s!lc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'www.orderin.delivery', 'orderin.delivery']
 
 
 # Application definition
@@ -133,6 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
