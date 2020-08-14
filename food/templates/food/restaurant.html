@@ -30,13 +30,13 @@ FoodBox | {{ restaurant.name }}
     <div class="card">
       <img class="card-img-top" style="height: 200px; object-fit: cover;" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body px-0 pb-0">
-        <div class="text-center">
+        <div class="text-center px-2">
           <h1 class="card-title mb-1" id="logo">{{ restaurant.name }}</h1>
-          <div class="mt-0 mb-2 pl-4">
+          <div class="mt-0 mb-2">
             5.0 / 5.0 <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>
           </div>
-          <p class="card-subtitle mb-2 pl-4">{{ restaurant.description }}</p>
-          <div class="mb-2 pl-4">
+          <p class="card-subtitle mb-2">{{ restaurant.description }}</p>
+          <div class="mb-2">
             <!-- Open Time -->
             {% if restaurant.openTime %}
               {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
@@ -49,7 +49,7 @@ FoodBox | {{ restaurant.name }}
             {% endif %}
             <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
           </div>
-          <div class="mb-3 pl-4">
+          <div class="mb-3">
             {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
           </div>
         </div>
