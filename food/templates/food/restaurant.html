@@ -31,7 +31,7 @@ FoodBox | {{ restaurant.name }}
       <img class="card-img-top" style="height: 200px; object-fit: cover;" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body px-0 pb-0">
         <div class="text-center">
-          <h1 class="card-title mb-1 pl-4" id="logo">{{ restaurant.name }}</h1>
+          <h1 class="card-title mb-1" id="logo">{{ restaurant.name }}</h1>
           <div class="mt-0 mb-2 pl-4">
             5.0 / 5.0 <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>
           </div>
