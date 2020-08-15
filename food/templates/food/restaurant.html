@@ -35,7 +35,7 @@ OrderIn | {{ restaurant.name }}
           <div class="mt-0 mb-2">
             5.0 / 5.0 <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>
           </div>
-          <p class="card-subtitle mb-2">{{ restaurant.description }}</p>
+          <p class="card-subtitle mb-2 mx-2">{{ restaurant.description }}</p>
           <div class="mb-2">
             <!-- Open Time -->
             {% if restaurant.openTime %}
@@ -119,10 +119,12 @@ OrderIn | {{ restaurant.name }}
       </div>
     </div> -->
 
+<!-- anchor to order list
     <div class="anchorList" id="currentOrderList">
     </div>
+-->
 
-    <div class="card shadow" id="filter">
+    <div class="card shadow d-none d-lg-block" id="filter">
       <div class="card-body py-4 px-4" id="order-div">
         {% if loggedIn %}
         <div class="d-flex justify-content-between">
@@ -214,5 +216,91 @@ OrderIn | {{ restaurant.name }}
 </nav>
 <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i></button>
 -->
-<a class="d-block d-lg-none btn btn-primary" href="#currentOrderList" id="cartToggle"><i class="fa fa-shopping-basket fa-lg" style="margin-top:13px;" aria-hidden="true"></i></a>
+<div id="filterSidebar" class="resSidebar d-block d-lg-none">
+  <div class="row mb-2">
+    <div class="col-12">
+      <div class="card shadow mx-2" id="filter">
+        <div class="card-body py-4 px-4" id="MOBorder-div">
+          {% if loggedIn %}
+          <div class="d-flex justify-content-between">
+            <h5 class="card-text font-weight-bold f2 text-dark">YOUR ORDER</h5>
+            <h5 class="font-weight-light">#{{ currentOrder.id }}</h5>
+          </div>
+            {% if phoneNumber %}
+              <p>PHONE: {{ phoneNumber }}</p>
+            {% else %}
+              <p><a href="{% url 'phoneNumber' %}">Confirm your phone number.</a></p>
+            {% endif %}
+          {% else %}
+            <h5 class="card-text font-weight-bold f2">PLEASE LOGIN TO ORDER</h5>
+          {% endif %}
+
+
+          <!-- Order list -->
+          {% if request.user.is_authenticated %}
+          <hr class="orderList">
+          <table class="table table-borderless f2 mt-n3">
+            <thead>
+               <tr class="font-weight-bold">
+                 <th scope="col"><small>PRODUCT</small></th>
+                 <th scope="col"><small>QTY</small></th>
+                 <th scope="col"><small>PRICE</small></th>
+               </tr>
+             </thead>
+            <tbody id="MOBorder-list">
+                {% for item in currentOrder.items.all %}
+                  <tr id="MOBorder-item-{{ item.id }}">
+                    <td class="font-weight-bold">{{ item.menuItem.name }}</td>
+                    <td class="text-right MOBitem-count">{{ item.count }}</td>
+                    <td class="text-right MOBitem-price">{{ item.menuItem.price|multiply:item.count }}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="font-weight-bold">
+                {% if currentOrder %}
+                  <td>Total (&#8377;)</td>
+                  <td></td>
+                  <td class="text-right"><span id="MOBtotal-price">{{ currentOrder.totalPrice }}</span></td>
+                {% else %}
+                  <td>Total (&#8377;)</td>
+                  <td></td>
+                  <td class="text-right"><span id="MOBtotal-price">0</span></td>
+                {% endif %}
+              </tr>
+            </tfoot>
+          </table>
+          <hr class="orderList mt-n2">
+          <form action="{% url 'restaurant' restaurant.id %}" method="post">
+            {% csrf_token %}
+            <input id="MOBorder-id" type="hidden" name="orderId" value="{{ currentOrder.id }}">
+            {% if currentOrder.totalPrice > 0 %}
+              <button id="MOBorder-button" class="form-control btn-danger" type="submit" name="button">Confirm Order</button>
+            {% else %}
+              <button id="MOBorder-button" class="form-control btn-danger" type="submit" name="button" style="display: none;">Confirm Order</button>
+            {% endif %}
+          </form>
+          {% else %}
+          <form class="mt-3" action="{% url 'login' %}">
+            <button id="MOBorder-button" class="form-control btn-outline-success" type="submit" name="button">LOGIN</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
+<a class="d-block d-lg-none btn btn-primary" onclick="openNav()" id="cartToggle"><i class="fa fa-shopping-basket fa-lg text-white" style="margin-top:13px;" aria-hidden="true"></i></a>
+<script>
+function openNav() {
+  if (document.getElementById("filterSidebar").style.width == "100%") {
+    document.getElementById("filterSidebar").style.width = "0";
+  } else {
+    document.getElementById("filterSidebar").style.width = "100%";
+  }
+}
+</script>
 {% endblock %}

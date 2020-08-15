@@ -95,6 +95,8 @@ OrderIn | Home
   </div>
   </div>
 </nav>-->
+
+<!-- Filter for mobile
 <nav class="d-lg-none navbar-dark bg-dark fixed-bottom collapse pb-5" id="cart">
   <div class="container">
     <a class="navbar-brand font-weight-bold mt-3 mb-2" href="{% url 'index' %}" id="f1">Filter</a>
@@ -106,6 +108,15 @@ OrderIn | Home
   </div>
 </nav>
 <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+-->
+<button class="d-block d-lg-none btn btn-primary" onclick="openNav()" type="button" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+
+<div id="filterSidebar" class="sidebar">
+  <h5 class="ml-3">Filters</h5>
+  {% for cui in cuisine %}
+      <label for="filter-{{ cui.name }}" class="btn{{ cui.name }} btn btn-sm btn-outline-light my-1 ml-3" style="border-radius:50px;">{{ cui.name }}</label>
+  {% endfor %}
+</div>
 
 <!-- popup won't show up if you are logged in -->
 {% if not request.user.is_authenticated %}
@@ -136,6 +147,13 @@ OrderIn | Home
 </script>
 {% endif %}
 <script>
+  function openNav() {
+    if (document.getElementById("filterSidebar").style.width == "110px") {
+      document.getElementById("filterSidebar").style.width = "0";
+    } else {
+      document.getElementById("filterSidebar").style.width = "110px";
+    }
+  }
   $("#filters :checkbox").click(function() {
       $(".restaurants").hide();
       $("#filters :checkbox:checked").each(function() {
