@@ -13,12 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const orderList = orderDiv.querySelector('#order-list')
   const totalPrice = orderDiv.querySelector('#total-price')
 
-  /* IMPORTANT MOBILE VARIABLES - Order list */
-  const MOBorderDiv = document.querySelector('#MOBorder-div')
-
-  const MOBorderList = MOBorderDiv.querySelector('#MOBorder-list')
-  const MOBtotalPrice = MOBorderDiv.querySelector('#MOBtotal-price')
-
   /* Menu items can easily be ordered using a side div */
   // Call the order item divs
   const itemDivs = document.querySelectorAll('.order-item-div')
@@ -36,8 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const orderListId = document.getElementById('order-id')
   const orderButton = document.querySelector('#order-button')
-  const MOBorderListId = document.getElementById('MOBorder-id')
-  const MOBorderButton = document.querySelector('#MOBorder-button')
 
   ////////////////////////////////////////////////////////////////
   //                                                            //
@@ -65,20 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log(result)
 
           totalPrice.innerHTML = result['totalPrice']
-          MOBtotalPrice.innerHTML = result['totalPrice']
 
           // Update counter + get the new count
           const newCount = updateCount(counter, -1)
 
           const orderId = result['orderId']
           const orderItem = document.getElementById(`order-item-${orderId}`)
-          const MOBorderItem = document.getElementById(`MOBorder-item-${orderId}`)
 
           if (newCount <= 0) {
             btn.disabled = true
             btn.classList.add('button-disabled')
             orderItem.remove()
-            MOBorderItem.remove()
           }
           else {
             // Update count on the ORDER LIST
@@ -86,17 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemPrice = orderItem.querySelector('.item-price')
             itemPrice.innerHTML = itemPrice.innerText - itemPrice.innerText / Number(itemCount.innerText)
             itemCount.innerHTML = Number(itemCount.innerText) - 1
-
-            const MOBitemCount = MOBorderItem.querySelector('.MOBitem-count')
-            const MOBitemPrice = MOBorderItem.querySelector('.MOBitem-price')
-            MOBitemPrice.innerHTML = MOBitemPrice.innerText - MOBitemPrice.innerText / Number(MOBitemCount.innerText)
-            MOBitemCount.innerHTML = Number(MOBitemCount.innerText) - 1
           }
 
           // Is the Order list none?
           if (result['none']) {
             orderButton.style.display = 'none'
-            MOBorderButton.style.display = 'none'
           }
         })
     }
@@ -116,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log(result)
 
           totalPrice.innerHTML = result['totalPrice']
-          MOBtotalPrice.innerHTML = result['totalPrice']
 
           const newCount = updateCount(counter, 1)
 
@@ -126,9 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // TODO Add new order template
             orderList.innerHTML += `\
               <tr id="order-item-${ orderId }"><td class="font-weight-bold">${ result['name'] }</td><td class="text-right item-count">1</td><td class="text-right item-price">${ result['price'] }</td></tr>`
-
-            MOBorderList.innerHTML += `\
-              <tr id="MOBorder-item-${ orderId }"><td class="font-weight-bold">${ result['name'] }</td><td class="text-right MOBitem-count">1</td><td class="text-right MOBitem-price">${ result['price'] }</td></tr>`
 
             // Add the OrderItem ID to the remove item button
             removeBtn.dataset.id = orderId
@@ -142,13 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const itemPrice = orderItem.querySelector('.item-price')
             itemPrice.innerHTML = Number(itemPrice.innerHTML) + result['price']
-
-            const MOBorderItem = document.getElementById(`MOBorder-item-${orderId}`)
-            const MOBitemCount = MOBorderItem.querySelector('.MOBitem-count')
-            MOBitemCount.innerHTML = Number(MOBitemCount.innerText) + 1
-
-            const MOBitemPrice = MOBorderItem.querySelector('.MOBitem-price')
-            MOBitemPrice.innerHTML = Number(MOBitemPrice.innerHTML) + result['price']
           }
 
           // If a new Order object has been created, enable
@@ -156,9 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(result['orderListId'])
             orderListId.value = result['orderListId']
             orderButton.style.display = 'block'
-
-            MOBorderListId.value = result['orderListId']
-            MOBorderButton.style.display = 'block'
           }
         })
     }
