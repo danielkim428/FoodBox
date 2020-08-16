@@ -30,7 +30,7 @@
           {% if not user.profile.phoneNumber %}
           <a class="dropdown-item bg-info text-white" href="{% url 'phoneNumber' %}">***Enter phone number***</a>
           {% endif %}
-          <a class="dropdown-item" href="#">Your profile</a>
+          <a class="dropdown-item disabled" href="#" disabled>Your profile</a>
           <a class="dropdown-item" href="{% url 'orders' %}">Your orders</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
