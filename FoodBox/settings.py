@@ -146,3 +146,5 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+#ACCOUNT_ADAPTER = 'api.adapter.UserAccountAdapter'
