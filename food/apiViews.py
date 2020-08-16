@@ -12,6 +12,10 @@ def addItem(request, restaurantId, menuId):
     else:
         menuItem = MenuItem.objects.get(id=menuId)
         restaurant = Restaurant.objects.get(id=restaurantId)
+        
+        # EXPLOIT CHECK: If restaurant ID = MenuItem's restaurant ID
+        if (menuItem.category.restaurant.id != restaurant.id):
+            return False
 
         context = {
             'name': menuItem.name,
