@@ -75,6 +75,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=64, blank=True)
     phoneNumber = models.CharField(max_length=64, blank=True)
+    woodstock = models.BooleanField(default=False, blank=True)
 
     ownedRestaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='owners', null=True)
 
