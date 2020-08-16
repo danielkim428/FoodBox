@@ -61,40 +61,6 @@
 .orderList {
   border-top: 1px dashed grey;
 }
-.sidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  background-color: rgba(52,58,64,0.9);
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 70px;
-}
-.sidebar h5 {
-  color: white;
-}
-.sidebar label {
-  transition: 0.3s;
-  white-space: nowrap;
-}
-.resSidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  background-color: rgba(255,255,255,0.9);
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding-top: 70px;
-  white-space: nowrap;
-}
-
-
 [class*="imageSize"] {
   width: 100%;
 }

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-FoodBox | {{ restaurant.name }}
+OrderIn | {{ restaurant.name }}
 {% endblock %}
 {% load food_extra %}
 
@@ -28,28 +28,30 @@ FoodBox | {{ restaurant.name }}
 <div class="row animate__animated animate__fadeIn">
   <div class="col-12 col-lg-8 px-0 px-lg-3 mb-4">
     <div class="card">
-      <img class="card-img-top" style="height: 200px;" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
+      <img class="card-img-top" style="height: 200px; object-fit: cover;" src="{% with 'food/img/'|add:restaurant.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ restaurant.name }}">
       <div class="card-body px-0 pb-0">
-        <h1 class="card-title mb-1 pl-4" id="logo">{{ restaurant.name }}</h1>
-        <div class="mt-0 mb-2 pl-4">
-          5.0 / 5.0 <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>
-        </div>
-        <p class="card-subtitle mb-2 pl-4">{{ restaurant.description }}</p>
-        <div class="mb-2 pl-4">
-          <!-- Open Time -->
-          {% if restaurant.openTime %}
-            {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
-              <span class="text-success">Open</span>
-            {% else %}
-              <span class="text-danger">Closed</span>
+        <div class="text-center px-2">
+          <h1 class="card-title mb-1" id="logo">{{ restaurant.name }}</h1>
+          <div class="mt-0 mb-2">
+            5.0 / 5.0 <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>
+          </div>
+          <p class="card-subtitle mb-2 mx-2">{{ restaurant.description }}</p>
+          <div class="mb-2">
+            <!-- Open Time -->
+            {% if restaurant.openTime %}
+              {% if restaurant.openTime <= currentTime.time and restaurant.closeTime >= currentTime.time %}
+                <span class="text-success">Open</span>
+              {% else %}
+                <span class="text-danger">Closed</span>
+              {% endif %}
+              {{ restaurant.openTime }} - {{ restaurant.closeTime }}
+              &nbsp;|&nbsp;
             {% endif %}
-            {{ restaurant.openTime }} - {{ restaurant.closeTime }}
-            &nbsp;|&nbsp;
-          {% endif %}
-          <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
-        </div>
-        <div class="mb-3 pl-4">
-          {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
+            <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
+          </div>
+          <div class="mb-3">
+            {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
+          </div>
         </div>
         {% for category in categories %}
           <button class="btn btn-light btn-md btn-block d-flex justify-content-between px-3" type="button" data-toggle="collapse" data-target="#{{ category.name|cut:' ' }}" aria-expanded="false" aria-controls="{{ category.name|cut:' ' }}">
@@ -63,10 +65,10 @@ FoodBox | {{ restaurant.name }}
               {% for menu in category.menu.all %}
                 <div class="border-bottom px-3 py-3">
                   <div class="row">
-                    <div class="col-10">
+                    <div class="col-8">
                       <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
                     </div>
-                    <div class="col-2">
+                    <div class="col-4">
                       <nav aria-label="order count">
                         <ul class="order-item-div pagination justify-content-end mt-1 mb-0">
                           <!-- Look into templatetags for more description -->
@@ -117,10 +119,12 @@ FoodBox | {{ restaurant.name }}
       </div>
     </div> -->
 
+<!-- anchor to order list
     <div class="anchorList" id="currentOrderList">
     </div>
+-->
 
-    <div class="card shadow" id="filter">
+    <div class="card shadow d-none d-lg-block" id="filter">
       <div class="card-body py-4 px-4" id="order-div">
         {% if loggedIn %}
         <div class="d-flex justify-content-between">
@@ -212,5 +216,91 @@ FoodBox | {{ restaurant.name }}
 </nav>
 <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i></button>
 -->
-<a class="d-block d-lg-none btn btn-primary" href="#currentOrderList" id="cartToggle"><i class="fa fa-shopping-basket fa-lg" style="margin-top:13px;" aria-hidden="true"></i></a>
+<div id="filterSidebar" class="resSidebar d-block d-lg-none">
+  <div class="row mb-2">
+    <div class="col-12">
+      <div class="card shadow mx-2" id="filter">
+        <div class="card-body py-4 px-4" id="MOBorder-div">
+          {% if loggedIn %}
+          <div class="d-flex justify-content-between">
+            <h5 class="card-text font-weight-bold f2 text-dark">YOUR ORDER</h5>
+            <h5 class="font-weight-light">#{{ currentOrder.id }}</h5>
+          </div>
+            {% if phoneNumber %}
+              <p>PHONE: {{ phoneNumber }}</p>
+            {% else %}
+              <p><a href="{% url 'phoneNumber' %}">Confirm your phone number.</a></p>
+            {% endif %}
+          {% else %}
+            <h5 class="card-text font-weight-bold f2">PLEASE LOGIN TO ORDER</h5>
+          {% endif %}
+
+
+          <!-- Order list -->
+          {% if request.user.is_authenticated %}
+          <hr class="orderList">
+          <table class="table table-borderless f2 mt-n3">
+            <thead>
+               <tr class="font-weight-bold">
+                 <th scope="col"><small>PRODUCT</small></th>
+                 <th scope="col"><small>QTY</small></th>
+                 <th scope="col"><small>PRICE</small></th>
+               </tr>
+             </thead>
+            <tbody id="MOBorder-list">
+                {% for item in currentOrder.items.all %}
+                  <tr id="MOBorder-item-{{ item.id }}">
+                    <td class="font-weight-bold">{{ item.menuItem.name }}</td>
+                    <td class="text-right MOBitem-count">{{ item.count }}</td>
+                    <td class="text-right MOBitem-price">{{ item.menuItem.price|multiply:item.count }}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="font-weight-bold">
+                {% if currentOrder %}
+                  <td>Total (&#8377;)</td>
+                  <td></td>
+                  <td class="text-right"><span id="MOBtotal-price">{{ currentOrder.totalPrice }}</span></td>
+                {% else %}
+                  <td>Total (&#8377;)</td>
+                  <td></td>
+                  <td class="text-right"><span id="MOBtotal-price">0</span></td>
+                {% endif %}
+              </tr>
+            </tfoot>
+          </table>
+          <hr class="orderList mt-n2">
+          <form action="{% url 'restaurant' restaurant.id %}" method="post">
+            {% csrf_token %}
+            <input id="MOBorder-id" type="hidden" name="orderId" value="{{ currentOrder.id }}">
+            {% if currentOrder.totalPrice > 0 %}
+              <button id="MOBorder-button" class="form-control btn-danger" type="submit" name="button">Confirm Order</button>
+            {% else %}
+              <button id="MOBorder-button" class="form-control btn-danger" type="submit" name="button" style="display: none;">Confirm Order</button>
+            {% endif %}
+          </form>
+          {% else %}
+          <form class="mt-3" action="{% url 'login' %}">
+            <button id="MOBorder-button" class="form-control btn-outline-success" type="submit" name="button">LOGIN</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
+<a class="d-block d-lg-none btn btn-primary" onclick="openNav()" id="cartToggle"><i class="fa fa-shopping-basket fa-lg text-white" style="margin-top:13px;" aria-hidden="true"></i></a>
+<script>
+function openNav() {
+  if (document.getElementById("filterSidebar").style.width == "100%") {
+    document.getElementById("filterSidebar").style.width = "0";
+  } else {
+    document.getElementById("filterSidebar").style.width = "100%";
+  }
+}
+</script>
 {% endblock %}

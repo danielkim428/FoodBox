@@ -3,7 +3,7 @@
 {% load food_extra %}
 
 {% block title %}
-FoodBox
+OrderIn | Address
 {% endblock %}
 
 {% block body %}
@@ -109,7 +109,7 @@ FoodBox
     var lat = position.coords.latitude;
     var long = position.coords.longitude;
     console.log(lat + ", " + long);
-    var url = "http://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+long+"&zoom=18&addressdetails=1";
+    var url = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+long+"&zoom=18&addressdetails=1";
     $.getJSON(url, function(data) {
       console.log(data);
       document.getElementById("address").value = data.display_name;

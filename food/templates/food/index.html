@@ -2,15 +2,16 @@
 {% load static %}
 
 {% block title %}
-FoodBox | Home
+OrderIn | Home
 {% endblock %}
 
 {% block body %}
 <h3 class="my-3" id="f1">Restaurants</h3>
-
+<!--
 <div class="alert alert-danger" role="alert">
   THIS WEBSITE IS CURRENTLY IN DEVELOPMENT. THE ORDERS DO NOT WORK AND ARE FOR DEMO PURPOSES ONLY.
 </div>
+-->
 {% if ownedRestaurant %}
   <div class="alert alert-warning" role="alert">
     ADMIN: <a class="alert-link" href="{% url 'restaurantOrders' ownedRestaurant.id %}">Look at your restaurant's orders!</a>
@@ -53,7 +54,7 @@ FoodBox | Home
     {% for res in restaurants %}
     <div class="restaurants card flex-row flex-wrap flex-md-nowrap mb-4 animate__animated animate__fadeIn {% for cui in res.cuisine.all %}{{ cui.name }} {% endfor %}">
         <div class="card-header border-0 p-0">
-            <img class="imageSize" src="{% with 'food/img/'|add:res.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ res.name }}">
+            <img class="imageSize" src="{% with 'food/img/'|add:res.name|add:'.jpg' as image_static %}{% static image_static %}{% endwith %}" alt="{{ res.name }}" onclick="location.href='{% url 'restaurant' res.id %}'">
         </div>
         <div class="card-body p-4 p-md-5">
             <h4 class="card-title font-weight-bold mb-0" id="logo">{{ res.name }}</h4>
@@ -94,6 +95,8 @@ FoodBox | Home
   </div>
   </div>
 </nav>-->
+
+<!-- Filter for mobile
 <nav class="d-lg-none navbar-dark bg-dark fixed-bottom collapse pb-5" id="cart">
   <div class="container">
     <a class="navbar-brand font-weight-bold mt-3 mb-2" href="{% url 'index' %}" id="f1">Filter</a>
@@ -105,7 +108,52 @@ FoodBox | Home
   </div>
 </nav>
 <button class="d-block d-lg-none btn btn-primary" type="button" data-toggle="collapse" data-target="#cart" aria-expanded="false" aria-controls="cart" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+-->
+<button class="d-block d-lg-none btn btn-primary" onclick="openNav()" type="button" id="cartToggle"><i class="fa fa-filter fa-lg" aria-hidden="true"></i></button>
+
+<div id="filterSidebar" class="sidebar">
+  <h5 class="ml-3">Filters</h5>
+  {% for cui in cuisine %}
+      <label for="filter-{{ cui.name }}" class="btn{{ cui.name }} btn btn-sm btn-outline-light my-1 ml-3" style="border-radius:50px;">{{ cui.name }}</label>
+  {% endfor %}
+</div>
+
+<!-- popup won't show up if you are logged in -->
+{% if not request.user.is_authenticated %}
+<div class="modal fade mt-5" id="popup" tabindex="-1" role="dialog" aria-labelledby="popuplabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="popuplabel">Disclaimer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        THIS WEBSITE IS CURRENTLY IN DEVELOPMENT. THE ORDERS DO NOT WORK AND ARE FOR DEMO PURPOSES ONLY.
+      </div>
+    </div>
+  </div>
+</div>
 <script>
+    $(window).on('load',function(){
+      // hide popup for 24 hrs
+      if (document.cookie.indexOf("popupShown=true") == -1) {
+          document.cookie = "popupShown=true; max-age=86400"; // 86400: seconds in a day
+          //bootstrap modal/popup show
+          $('#popup').modal('show');
+      }
+    });
+</script>
+{% endif %}
+<script>
+  function openNav() {
+    if (document.getElementById("filterSidebar").style.width == "110px") {
+      document.getElementById("filterSidebar").style.width = "0";
+    } else {
+      document.getElementById("filterSidebar").style.width = "110px";
+    }
+  }
   $("#filters :checkbox").click(function() {
       $(".restaurants").hide();
       $("#filters :checkbox:checked").each(function() {
