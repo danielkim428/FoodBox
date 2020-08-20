@@ -19,6 +19,7 @@ class Restaurant(models.Model):
 
     openTime = models.TimeField(blank=True, null=True)
     closeTime = models.TimeField(blank=True, null=True)
+    orderTime = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return self.name

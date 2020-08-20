@@ -69,9 +69,13 @@ OrderIn | Home
                 {{ res.openTime }} - {{ res.closeTime }}
               </p>
             {% endif %}
-            <p class="card-subtitle mt-1" id="f1">{% for cui in res.cuisine.all %}{{ cui.name }} {% endfor %}</p>
+            <!-- <p class="card-subtitle mt-1" id="f1">{% for cui in res.cuisine.all %}{{ cui.name }} {% endfor %}</p> -->
             <p class="card-text">{{ res.description }}</p>
-            <a href="{% url 'restaurant' res.id %}" class="btn btn-outline-success">Order Now</a>
+            {% if res.orderTime >= currentTime.time and res.openTime <= currentTime.time %}
+              <a href="{% url 'restaurant' res.id %}" class="btn btn-outline-success">Order Now</a>
+            {% else %}
+              <a href="{% url 'restaurant' res.id %}" class="btn btn-outline-info">View Restaurant</a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

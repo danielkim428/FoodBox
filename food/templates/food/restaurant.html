@@ -49,6 +49,11 @@ OrderIn | {{ restaurant.name }}
             {% endif %}
             <i class="fa fa-mobile" aria-hidden="true"></i> {{ restaurant.phoneNumber }}
           </div>
+          <div class="mb-2">
+            {% if restaurant.orderTime < currentTime.time %}
+              <span class="badge badge-warning">This restaurant is not taking more orders for today.</span>
+            {% endif %}
+          </div>
           <div class="mb-3">
             {% for category in categories %}<a href="#{{ category.name }}" class="btn btn-sm btn-outline-secondary my-1 mr-1" style="border-radius:50px;">{{ category.name }}</a>{% endfor %}
           </div>
@@ -69,26 +74,30 @@ OrderIn | {{ restaurant.name }}
                       <p class="font-weight-bold my-auto" id="f1">{{ menu.name }}</p><p class="my-auto">&#8377; {{ menu.price }}</p>
                     </div>
                     <div class="col-4">
-                      <nav aria-label="order count">
-                        <ul class="order-item-div pagination justify-content-end mt-1 mb-0">
-                          <!-- Look into templatetags for more description -->
-                          {{ currentOrder.items.all|matchingID:menu.id }}
-                          <!-- FUNCTIONS:
-                            - Remove Button
-                            - Count -->
+                      {% if restaurant.openTime < currentTime.time and restaurant.orderTime > currentTime.time %}
+                        {% if request.user.is_authenticated %}
+                          <nav aria-label="order count">
+                            <ul class="order-item-div pagination justify-content-end mt-1 mb-0">
+                              <!-- Look into templatetags for more description -->
+                              {{ currentOrder.items.all|matchingID:menu.id }}
+                              <!-- FUNCTIONS:
+                                - Remove Button
+                                - Count -->
 
-                          <!-- FOR REFERENCE:
-                            <li class="page-item">
-                              <button class="remove-order-button page-link font-weight-bold text-dark" data-id="{result['id']}">-</button>
-                            </li>
-                            <li class="page-item disabled"><a class="page-link order-item-count" href="#">{result['count']}</a></li>
-                          -->
+                              <!-- FOR REFERENCE:
+                                <li class="page-item">
+                                  <button class="remove-order-button page-link font-weight-bold text-dark" data-id="{result['id']}">-</button>
+                                </li>
+                                <li class="page-item disabled"><a class="page-link order-item-count" href="#">{result['count']}</a></li>
+                              -->
 
-                          <li class="page-item">
-                            <button class="add-order-button page-link font-weight-bold text-dark" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
-                          </li>
-                        </ul>
-                      </nav>
+                              <li class="page-item">
+                                <button class="add-order-button page-link font-weight-bold text-dark" data-id="{{ menu.id }}" data-restaurantid="{{ restaurant.id }}">+</button>
+                              </li>
+                            </ul>
+                          </nav>
+                        {% endif %}
+                      {% endif %}
                     </div>
                   </div>
                 </div>
@@ -132,7 +141,7 @@ OrderIn | {{ restaurant.name }}
           <h5 class="font-weight-light">#{{ currentOrder.id }}</h5>
         </div>
           {% if phoneNumber %}
-            <p>PHONE: {{ phoneNumber }}</p>
+            <p>PHONE: +91 {{ phoneNumber }}</p>
           {% else %}
             <p><a href="{% url 'phoneNumber' %}">Confirm your phone number.</a></p>
           {% endif %}
@@ -180,7 +189,11 @@ OrderIn | {{ restaurant.name }}
           {% csrf_token %}
           <input id="order-id" type="hidden" name="orderId" value="{{ currentOrder.id }}">
           {% if currentOrder.totalPrice > 0 %}
-            <button id="order-button" class="form-control btn-danger" type="submit" name="button">Confirm Order</button>
+            {% if restaurant.openTime < currentTime.time and restaurant.orderTime > currentTime.time %}
+              <button id="MOBorder-button" class="form-control btn-danger" type="submit" name="button">Confirm Order</button>
+            {% else %}
+              <button id="MOBorder-button" class="form-control btn-light" type="submit" name="button" disabled>Order Closed</button>
+            {% endif %}
           {% else %}
             <button id="order-button" class="form-control btn-danger" type="submit" name="button" style="display: none;">Confirm Order</button>
           {% endif %}
@@ -227,7 +240,7 @@ OrderIn | {{ restaurant.name }}
             <h5 class="font-weight-light">#{{ currentOrder.id }}</h5>
           </div>
             {% if phoneNumber %}
-              <p>PHONE: {{ phoneNumber }}</p>
+              <p>PHONE: +91 {{ phoneNumber }}</p>
             {% else %}
               <p><a href="{% url 'phoneNumber' %}">Confirm your phone number.</a></p>
             {% endif %}
@@ -275,7 +288,11 @@ OrderIn | {{ restaurant.name }}
             {% csrf_token %}
             <input id="MOBorder-id" type="hidden" name="orderId" value="{{ currentOrder.id }}">
             {% if currentOrder.totalPrice > 0 %}
-              <button id="MOBorder-button" class="form-control btn-danger" type="submit" name="button">Confirm Order</button>
+              {% if restaurant.openTime < currentTime.time and restaurant.orderTime > currentTime.time %}
+                <button id="MOBorder-button" class="form-control btn-danger" type="submit" name="button">Confirm Order</button>
+              {% else %}
+                <button id="MOBorder-button" class="form-control btn-light" type="submit" name="button" disabled>Order Closed</button>
+              {% endif %}
             {% else %}
               <button id="MOBorder-button" class="form-control btn-danger" type="submit" name="button" style="display: none;">Confirm Order</button>
             {% endif %}
