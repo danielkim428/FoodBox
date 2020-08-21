@@ -211,6 +211,27 @@ def login_view(request):
     else:
         return render(request, 'food/login.html')
 
+# Page that the user is redirected to from Google Sign In
+# This is to check whether the student is Woodstock student or not;
+# Boolean value of woodstock = True
+def woodstock_recognize(request):
+    if request.user.is_authenticated:
+        user = request.user
+
+        if user.email != '':
+            email = user.email.split('@')
+
+            if email[1] == 'woodstock.ac.in':
+                user.profile.woodstock = True
+                print('User is Woodstock')
+                user.save()
+            else:
+                print('User is not Woodstock')
+        else:
+            print('User does not have email')
+
+        return HttpResponseRedirect(reverse('index'))
+
 # People who register are redirected to this view to confirm their phone number
 # TODO WhatsApp bot integration
 def phoneNumber(request):

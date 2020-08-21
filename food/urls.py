@@ -16,6 +16,7 @@ urlpatterns = [
     path("phonenumber", views.phoneNumber, name='phoneNumber'),
     path("logout", views.logout_view, name='logout'),
     path("register", views.register, name='register'),
+    path("woodstock_recognize", views.woodstock_recognize, name='woodstock_recognize'),
 
     path("about", views.about, name='about'),
 

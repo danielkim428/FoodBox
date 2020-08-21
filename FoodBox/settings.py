@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 2
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/woodstock_recognize'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

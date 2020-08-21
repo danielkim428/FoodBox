@@ -24,7 +24,11 @@
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{ user.username|title }} {% if user.profile.phoneNumber %}+91 {{ user.profile.phoneNumber }}{% else %}<span class="badge badge-light">1</span>{% endif %}
+          {% if user.profile.woodstock == True %}
+            <span class="badge badge-warning">WS</span>
+          {% endif %}
+          {{ user.username|title }}
+          {% if user.profile.phoneNumber %}+91 {{ user.profile.phoneNumber }}{% else %}<span class="badge badge-light">1</span>{% endif %}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           {% if not user.profile.phoneNumber %}
