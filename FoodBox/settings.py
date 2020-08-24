@@ -25,7 +25,7 @@ SECRET_KEY = '!xg89nl*1n=4inxpiw*ruz8$3zvy7=*!=@cyqn5gm0#-5*s!lc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'www.orderin.delivery', 'orderin.delivery']
+ALLOWED_HOSTS = ['127.0.0.1', 'www.orderin.delivery', 'orderin.delivery', 'orderin.ws', 'www.orderin.ws']
 
 
 # Application definition
