@@ -75,6 +75,7 @@ OrderIn | Orders
                 <h5 class="font-weight-light">#{{ order.id }}</h5>
               </div>
               <p><small>Delivering to <a href="https://maps.google.com/?q={{ order.address }}" class="text-success" target="_blank">{{ order.address }}</a></small></p>
+              <p><small>Ordered at {{ order.orderedTime }}</small></p>
               <hr class="orderList">
               <table class="table table-borderless f2 mt-n3">
                 <thead>

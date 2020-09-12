@@ -49,19 +49,17 @@ def restaurantOrders(request, restaurantId):
 
             if action == 'confirm':
                 # Pending --> Delivering status
-                order.status = 2
-                order.confirmedTime = datetime.datetime.now()
+                order.confirm()
 
                 # TODO WhatsApp bot to customer
             elif action == 'delivered':
                 # Delivering --> Delivered status
-                order.status = 3
-                order.deliveredTime = datetime.datetime.now()
+                order.delivered()
 
                 # TODO WhatsApp bot to customer
             elif action == 'reject':
                 # Pending --> Choosing status
-                order.status = 0
+                order.rejected()
 
                 # TODO WhatsApp bot to customer
 

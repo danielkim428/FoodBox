@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+import datetime
+
 class Cuisine(models.Model):
     name = models.CharField(max_length=50)
 
@@ -20,6 +22,17 @@ class Restaurant(models.Model):
     openTime = models.TimeField(blank=True, null=True)
     closeTime = models.TimeField(blank=True, null=True)
     orderTime = models.TimeField(blank=True, null=True)
+
+    totalOrderCount = models.IntegerField(default=0)
+    averageOrderTime = models.TimeField(blank=True, null=True)
+    averageCost = models.IntegerField(blank=True, null=True)
+
+    def calculateAvgCost(self, newOrder):
+        # Create temp variable to store totalOrderCount to prevent data loss from save()
+        tempCount = self.totalOrderCount + 1
+        self.averageCost = (self.averageCost + newOrder.totalPrice) / tempCount
+        self.totalOrderCount = tempCount
+        self.save()
 
     def __str__(self):
         return self.name
@@ -58,6 +71,36 @@ class Order(models.Model):
 
     totalPrice = models.IntegerField(default=0)
 
+    # Pending --> Delivering status
+    def confirm(self):
+        self.status = 2
+        self.confirmedTime = datetime.datetime.now()
+
+        # Add cost of order to the average order cost for the restaurant
+        restaurant = self.restaurant
+        restaurant.calculateAvgCost(self)
+
+        self.save()
+
+        return f'Confirmed at {self.confirmedTime}'
+
+    # Delivering --> Delivered status
+    def delivered(self):
+        self.status = 3
+        self.deliveredTime = datetime.datetime.now()
+
+        print(f'Order took: {self.deliveredTime} - {self.confirmedTime}')
+        self.save()
+
+        return f'Delivered at {self.deliveredTime}'
+
+    # Pending --> Choosing status
+    def rejected(self):
+        self.status = 0
+        self.save()
+
+        return f'Rejected {self}'
+
     def __str__(self):
         return f'{self.user} -> {self.restaurant}, {self.status}'
 
@@ -81,6 +124,12 @@ class Profile(models.Model):
     ownedRestaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='owners', null=True)
 
     birthDate = models.DateField(null=True, blank=True)
+
+    totalSpent = models.IntegerField(default=0)
+
+    def addCumulative(self, order):
+        self.totalSpent += order.totalPrice
+        self.save()
 
     def __str__(self):
         return f'{self.user}, {self.location}'
