@@ -250,19 +250,21 @@ def phoneNumber(request):
 
     if request.user.is_authenticated:
         if request.method == 'POST':
-            phoneNumber = request.POST['phoneNumber']
-            print(phoneNumber)
+            triedOtp = request.POST['otp']
 
-            # TODO
-            user = request.user
-            user.profile.phoneNumber = phoneNumber
-            user.save()
+            if (triedOtp == request.user.profile.otp):
+                phoneNumber = request.POST['phoneNumber']
+                user = request.user
+                user.profile.phoneNumber = phoneNumber
+                user.profile.save()
 
-            pageNumber = request.POST['pageNumber']
-            if pageNumber == "":
-                return HttpResponseRedirect(reverse('index'))
+                pageNumber = request.POST['pageNumber']
+                if pageNumber == "":
+                    return HttpResponseRedirect(reverse('index'))
+                else:
+                    return HttpResponseRedirect(reverse('address', args=[pageNumber]))
             else:
-                return HttpResponseRedirect(reverse('address', args=[pageNumber]))
+                return render(request, 'food/phoneNumber.html', {"message": "Wrong OTP."})
         else:
             return render(request, 'food/phoneNumber.html', context)
     else:

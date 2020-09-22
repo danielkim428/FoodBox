@@ -121,6 +121,8 @@ class Profile(models.Model):
     phoneNumber = models.CharField(max_length=64, blank=True)
     woodstock = models.BooleanField(default=False, blank=True)
 
+    otp = models.CharField(max_length=64, default='')
+
     ownedRestaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='owners', null=True)
 
     birthDate = models.DateField(null=True, blank=True)

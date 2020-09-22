@@ -4,6 +4,15 @@ from django.shortcuts import render
 from django.core.serializers import serialize
 from .models import *
 
+from twilio.rest import Client
+
+import random
+
+import os
+
+os.environ['TWILIO_ACCOUNT_SID'] = 'ACcd99094db783d1141bf1de6a0f4c1e5a'
+os.environ['TWILIO_AUTH_TOKEN'] = 'e7b1fad4a5bff4685a0444bb77aba376'
+
 def addItem(request, restaurantId, menuId):
     if not request.user.is_authenticated:
         context = {
@@ -12,7 +21,7 @@ def addItem(request, restaurantId, menuId):
     else:
         menuItem = MenuItem.objects.get(id=menuId)
         restaurant = Restaurant.objects.get(id=restaurantId)
-        
+
         # EXPLOIT CHECK: If restaurant ID = MenuItem's restaurant ID
         if (menuItem.category.restaurant.id != restaurant.id):
             return False
@@ -107,4 +116,28 @@ def removeItem(request, orderedId):
             context['none'] = False
 
         context['totalPrice'] = orderList.totalPrice
+    return JsonResponse(context)
+
+def phoneNumberAPI(request, phoneNumber):
+    client = Client()
+
+    from_whatsapp_number="whatsapp:+14155238886"
+    to_whatsapp_number="whatsapp:+82" + phoneNumber
+
+    otp = str(random.randint(123456, 987654))
+
+    user = request.user
+    user.profile.otp = otp
+    user.profile.save()
+
+    print(user.profile.otp)
+
+    client.messages.create(body='[OrderIn]\nYour OTP code is ' + otp,
+                           from_=from_whatsapp_number,
+                           to=to_whatsapp_number)
+
+    context = {
+        'otp': otp
+    }
+
     return JsonResponse(context)
